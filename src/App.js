@@ -6,11 +6,11 @@ import {authenticate, logout, getUser } from './helpers.js';
 const  App = (props) => {
 
   const [state, setState] = useState( {
-    username: '',
+    email: '',
     password: ''
   })
 
-  const username = state.username
+  const email = state.email
   const password = state.password
 
   function handleChange(stateProperty) {
@@ -28,7 +28,7 @@ const  App = (props) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: username,
+                email: email,
                 password: password
             })
         })
@@ -63,8 +63,8 @@ const  App = (props) => {
         <div>        
           <div>Log In</div>
           <form onSubmit={handleSubmit}>
-            <label>Username</label>
-            <input type="text" value={username} name="username" onChange={handleChange('username')}></input>
+            <label>Email</label>
+            <input type="text" value={email} name="email" onChange={handleChange('email')}></input>
 
             <label>Password</label>
             <input type="password" value={password} onChange={handleChange('password')} name="password"></input>

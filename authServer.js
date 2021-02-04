@@ -36,8 +36,6 @@ mongoose.connect(process.env.DATABASE, {
 .then(() => console.log('DB Connected'))
 .catch(err => console.log(err));
 
-// User creating users database
-const users = []
 
 app.get('/users', (req, res) => {
   res.json(users)
@@ -57,6 +55,7 @@ app.get('/users', (req, res) => {
 //     }
 // })
 
+// POST /USERS  -- Creating a user
 app.post('/users', (req, res) => {
 
     const { email, password} = req.body;
@@ -77,9 +76,6 @@ app.post('/users', (req, res) => {
     //     console.log(err)
     //   }
     // })
-
-
-    
 
 })
 
