@@ -1,0 +1,48 @@
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9zaCIsImlhdCI6MTYwNjg2OTYxMiwiZXhwIjoxNjA2ODY5NjI3fQ.m8HNP7JWsurYE9lcbkvLMEguZaPkY0CZZlYrd7Dj-yg
+
+###
+
+POST http://localhost:4000/token 
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9zaCIsImlhdCI6MTYwNjg2OTYxMiwiZXhwIjoxNjA2ODY5NjI3fQ.m8HNP7JWsurYE9lcbkvLMEguZaPkY0CZZlYrd7Dj-yg"
+}
+
+###
+
+DELETE http://localhost:4000/logout 
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9zaCIsImlhdCI6MTYwNjg2OTA2NX0.TK5dLg06QrAQdRSbdPlp2rihXujThEPmiVV27vDq6kY"
+}
+
+###
+post http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "username": "Josh"
+}
+###
+
+post http://localhost:4000/users
+Content-Type: application/json
+
+{
+    "name": "Josh",
+    "password": "Test"
+}
+
+
+###
+
+post http://localhost:4000/users/login
+Content-Type: application/json
+
+{
+    "name": "Josh",
+    "password": "Test"
+}
