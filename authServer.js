@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const { restart } = require('nodemon')
 
 const mongoose = require('mongoose');
+require('./models/UserModel'); // Register user model
 
 // Bcrypt for password hashing and dehashing
 const bcrypt = require('bcrypt')
