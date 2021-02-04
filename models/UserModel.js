@@ -4,10 +4,7 @@ var jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 var UserSchema = new mongoose.Schema({
-    username: {type: String, lowercase: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true},
-    email: {type: String, lowercase: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true},
-    bio: String,
-    image: String,
+    email: String,
     hash: String,
     salt: String
 }, {timestamps: true});
@@ -30,20 +27,17 @@ UserSchema.methods.generateJWT = function() {
 
     return jwt.sign({
         id: this._id,
-        username: this.username,
+        email: this.email,
         exp: parseInt(exp.getTime() / 1000),
         }, process.env.JWT_SECRET);
 };
 
 UserSchema.methods.toAuthJSON = function(){
     return {
-        username: this.username,
         email: this.email,
-        token: this.generateJWT(),
-        bio: this.bio,
-        image: this.image
+        token: this.generateJWT()
     };
 };
     
 
-mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

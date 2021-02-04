@@ -1,5 +1,7 @@
 require('dotenv').config()
 const cors = require('cors');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 const express = require('express')
 const app = express()
@@ -7,7 +9,7 @@ const jwt = require('jsonwebtoken')
 const { restart } = require('nodemon')
 
 const mongoose = require('mongoose');
-require('./models/UserModel'); // Register user model
+const User = require('./models/UserModel'); // Register user model
 
 // Bcrypt for password hashing and dehashing
 const bcrypt = require('bcrypt')
@@ -42,16 +44,43 @@ app.get('/users', (req, res) => {
 })
 
 // Creating user with bcrypt hashed password
-app.post('/users', async (req, res) => {
-    try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10)
-      const user = { name: req.body.name, password: hashedPassword }
-      users.push(user)
-      console.log(users)
-      res.status(201).send()
-    } catch {
-      res.status(500).send()
-    }
+// POST /USERS  -- Creating a user
+// app.post('/users', async (req, res) => {
+//     try {
+//       const hashedPassword = await bcrypt.hash(req.body.password, 10)
+//       const user = { name: req.body.name, password: hashedPassword }
+//       users.push(user)
+//       console.log(users)
+//       res.status(201).send()
+//     } catch {
+//       res.status(500).send()
+//     }
+// })
+
+app.post('/users', (req, res) => {
+
+    const { email, password} = req.body;
+
+    const user = new User({ email: email });
+
+    user.setPassword(password) // hash & salt generator with crypto
+    console.log(user.email)
+
+   //  console.log(user.hash + user.salt)
+
+    user.save()
+    
+    res.json(user);
+
+    // const user = User.create({ email }, (err, user) => {
+    //   if (err) {
+    //     console.log(err)
+    //   }
+    // })
+
+
+    
+
 })
 
 // Authentication below

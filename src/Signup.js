@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 class Signup extends React.Component {
     state = {
-        username: "",
+        email: "",
         password: ""
     };
 
@@ -19,7 +19,7 @@ class Signup extends React.Component {
     // };
 
     handleFormCreateUser = (event) => {
-        const { username, password } = this.state
+        const { email, password } = this.state
         
 
         fetch('http://localhost:4000/users', {
@@ -28,7 +28,7 @@ class Signup extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: username,
+                email: email,
                 password: password
             })
         })
@@ -58,7 +58,7 @@ class Signup extends React.Component {
                 
             <form onSubmit={this.handleFormCreateUser} >
                 <div>Sign Up</div>
-                <input type="text" id="username" placeholder="Username" onChange={this.handleInputChanged} />
+                <input type="email" id="email" placeholder="Email address" onChange={this.handleInputChanged} />
                 <input type="password" id="password" placeholder="Password"  onChange={this.handleInputChanged} />
                 <button type="submit">Submit</button>
             </form>

@@ -14,6 +14,7 @@
     "express-rate-limit": "^5.2.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.15",
+    "morgan": "^1.10.0",
     "nodemailer": "^6.4.17",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -23,7 +24,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "devStart": "nodemon server.js",
     "devStartAuth": "nodemon authServer.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
