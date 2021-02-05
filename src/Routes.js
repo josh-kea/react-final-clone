@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import App from './App';
 import Signup from './Signup';
+import Verify from './Verify';
 import './App.css';
 
 
@@ -11,6 +12,7 @@ const Routes = () => {
             <Switch>
                 <Route path="/" exact component={App} />
                 <Route path="/signup" exact component={Signup} />
+                <Route path="/verify/:verifyString" exact component={Verify} />
 
                 {/* <PrivateRoute path="/create" exact component={Create} />
                 <Route path="/post/:slug" exact component={SinglePost} />

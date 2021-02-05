@@ -8,7 +8,7 @@ var UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
     verifyString: String,
-    active: { type: Boolean, default: false }
+    isValid: { type: Boolean, default: false }
 }, {timestamps: true});
 
 UserSchema.methods.setPassword = function(password){
@@ -42,8 +42,8 @@ UserSchema.methods.toAuthJSON = function(){
 };
 
 UserSchema.methods.generateEmailVerificationString = function(email){
-    const salt = this.salt;
-    this.verifyString = crypto.pbkdf2Sync(email, this.salt, 10000, 512, 'sha512').toString('hex');
+    verifySalt = crypto.randomBytes(2).toString('hex');
+    this.verifyString = crypto.pbkdf2Sync(email, verifySalt, 10000, 512, 'sha512').toString('hex');
 }
     
 

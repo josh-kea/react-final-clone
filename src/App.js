@@ -44,7 +44,11 @@ const  App = (props) => {
           sessionStorage.setItem('token', JSON.stringify(data.token))
           sessionStorage.setItem('email', JSON.stringify(data.email))
           // JSON.parse(sessionStorage.getItem('token'))
-          props.history.push('/')
+
+          setTimeout(function(){
+            props.history.push('/')
+           }, 3000);
+
         })
         .catch(error => console.log(error))
     }

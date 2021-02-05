@@ -58,19 +58,38 @@ app.get('/users', (req, res) => {
 
 // Creating verification email function
 const sendVerificationMail = (email, uniqueString) => {
+  // const transporter = nodemailer.createTransport({
+  //   host: 'smtp.zoho.eu',
+  //   port: '465',
+  //   secure: true, // true for 465, false for other ports
+  //   auth: {
+  //     user: "joshua@ptd-cph.com", 
+  //     pass: process.env.ZOHO_PASSWORD, // zoho protected password
+  //   },
+  // });
+
+  // const transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   auth: {
+  //     user: 'joshwebdev29@gmail.com',
+  //     pass: "Devboy#1"
+  //   }
+  // });
+
   const transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.eu',
-    port: '465',
-    secure: true, // true for 465, false for other ports
+    host: 'smtp-relay.sendinblue.com',
+    port: '587',
+    secure: false, // true for 465, false for other ports
     auth: {
-      user: "joshua@ptd-cph.com", 
-      pass: process.env.ZOHO_PASSWORD, // zoho protected password
+      user: "joshkap2015@gmail.com", 
+      pass: process.env.SENDINBLUE_PASSWORD, // zoho protected password
     },
   });
 
   const mailOptions = {
-    from: "Joshua React Project",
-    to: email,
+    from: "joshua@ptd-cph.com",
+    // to: email,
+    to: "joshkap2015@gmail.com", // for testing purposes
     subject: "[React Josh] Confirm Your Email Address",
     html: `Press <a href="http://localhost:3000/verify/${uniqueString}"> here </a> to verify your email address. Thanks!`
   }
@@ -85,9 +104,19 @@ const sendVerificationMail = (email, uniqueString) => {
 }
 
 // GET /verify/:verifyString
-app.get('/verify/:verifyString', async (req, res) =>{
+app.get('/verifyEmail/:verifyString', async (req, res) =>{
+  const { verifyString } = req.params
 
+  const user = await User.findOne({ verifyString: verifyString });
 
+  if (user == null) {
+    console.log('user not found')
+    return res.status(400).send('Cannot find user')
+
+  } else if (user) {
+    user.isValid = true
+    await user.save()
+  }
 })
 
 // POST /users  -- Creating a user
@@ -95,20 +124,21 @@ app.post('/users', async (req, res) => {
 
     const { email, password} = req.body;
 
-    const user = await new User({ email: email });
+      const user = await new User({ email: email });
 
-    await user.setPassword(password) // hash & salt generator with crypto
-    // console.log(user.email)
+      await user.setPassword(password) // hash & salt generator with crypto
+      // console.log(user.email)
 
-   //  console.log(user.hash + user.salt)
+    //  console.log(user.hash + user.salt)
 
-    await user.generateEmailVerificationString(email)
+      await user.generateEmailVerificationString(email)
 
-    await user.save()
+      await user.save()
 
-    sendVerificationMail(email, user.verifyString)
-    
-    res.json(user);
+      sendVerificationMail(email, user.verifyString)
+      
+      res.json(user);
+
 })
 
 // POST /users/login -- Checks for existing user
