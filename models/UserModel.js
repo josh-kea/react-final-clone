@@ -6,7 +6,9 @@ require('dotenv').config()
 var UserSchema = new mongoose.Schema({
     email: String,
     hash: String,
-    salt: String
+    salt: String,
+    verifyString: String,
+    active: { type: Boolean, default: false }
 }, {timestamps: true});
 
 UserSchema.methods.setPassword = function(password){
@@ -23,7 +25,7 @@ UserSchema.methods.validPassword = function(password) {
 UserSchema.methods.generateJWT = function() {
     var today = new Date();
     var exp = new Date(today);
-    exp.setDate(today.getDate() + 60);
+    exp.setDate(today.getDate() + 1);
 
     return jwt.sign({
         id: this._id,
@@ -38,6 +40,11 @@ UserSchema.methods.toAuthJSON = function(){
         token: this.generateJWT()
     };
 };
+
+UserSchema.methods.generateEmailVerificationString = function(email){
+    const salt = this.salt;
+    this.verifyString = crypto.pbkdf2Sync(email, this.salt, 10000, 512, 'sha512').toString('hex');
+}
     
 
 module.exports = mongoose.model('User', UserSchema);

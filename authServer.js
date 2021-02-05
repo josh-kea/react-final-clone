@@ -2,6 +2,7 @@ require('dotenv').config()
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer')
 
 const express = require('express')
 const app = express()
@@ -55,6 +56,40 @@ app.get('/users', (req, res) => {
 //     }
 // })
 
+// Creating verification email function
+const sendVerificationMail = (email, uniqueString) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.zoho.eu',
+    port: '465',
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: "joshua@ptd-cph.com", 
+      pass: process.env.ZOHO_PASSWORD, // zoho protected password
+    },
+  });
+
+  const mailOptions = {
+    from: "Joshua React Project",
+    to: email,
+    subject: "[React Josh] Confirm Your Email Address",
+    html: `Press <a href="http://localhost:3000/verify/${uniqueString}"> here </a> to verify your email address. Thanks!`
+  }
+
+  transporter.sendMail(mailOptions, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Verification email send successfully.")
+    }
+  })
+}
+
+// GET /verify/:verifyString
+app.get('/verify/:verifyString', async (req, res) =>{
+
+
+})
+
 // POST /users  -- Creating a user
 app.post('/users', async (req, res) => {
 
@@ -62,20 +97,18 @@ app.post('/users', async (req, res) => {
 
     const user = await new User({ email: email });
 
-    user.setPassword(password) // hash & salt generator with crypto
+    await user.setPassword(password) // hash & salt generator with crypto
     // console.log(user.email)
 
    //  console.log(user.hash + user.salt)
 
-    user.save()
+    await user.generateEmailVerificationString(email)
+
+    await user.save()
+
+    sendVerificationMail(email, user.verifyString)
     
     res.json(user);
-
-    // const user = User.create({ email }, (err, user) => {
-    //   if (err) {
-    //     console.log(err)
-    //   }
-    // })
 })
 
 // POST /users/login -- Checks for existing user
@@ -143,45 +176,5 @@ app.post('/users/login', async (req, res) => {
     //   res.status(500).send('Lol')
     // }
 })
-
-// Authentication below
-
-let refreshTokens = []
-
-app.post(('/token'), (req,res) => {
-    const refreshToken = req.body.token
-    if (refreshToken == null) return res.sendStatus(401)
-    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
-
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403)
-        const accessToken = generateAccessToken({ name: user.name })
-        restart.json({ accessToken: accessToken })
-    })
-
-})
-
-app.delete('/logout', (req,res) => {
-    refreshTokens = refreshTokens.filter(token => token !== req.body.token )
-    res.sendStatus(204)
-})
-
-// app.post('/login', (req,res) => {
-//     // Authenticates User
-
-//     const username = req.body.username
-//     const user = { name: username}
-
-//     const accessToken = generateAccessToken(user)
-//     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-//     refreshTokens.push(refreshToken)
-//     res.json({ accessToken: accessToken, refreshToken: refreshToken })
-// })
-
-
-
-function generateAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
-}
 
 app.listen(4000)

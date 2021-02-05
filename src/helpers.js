@@ -32,7 +32,7 @@ export const getUser = () => {
 export const logout = (next) => {
     if(window !== 'undefined') {
         sessionStorage.removeItem('token')
-        sessionStorage.removeItem('user')
+        sessionStorage.removeItem('email')
     }
     next();
 };

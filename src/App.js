@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import {authenticate, logout, getUser } from './helpers.js';
+import {authenticate, getToken, logout, getUser } from './helpers.js';
 
 const  App = (props) => {
 
@@ -40,7 +40,7 @@ const  App = (props) => {
             }
             return response.json()
         }).then(data => {
-          
+
           sessionStorage.setItem('token', JSON.stringify(data.token))
           sessionStorage.setItem('email', JSON.stringify(data.email))
           // JSON.parse(sessionStorage.getItem('token'))
@@ -52,7 +52,7 @@ const  App = (props) => {
   return (
     
     <div className="container">
-      { !getUser() && (
+      { !getToken() && (
         <div>        
           <div>Log In</div>
           <form onSubmit={handleSubmit}>
@@ -69,7 +69,7 @@ const  App = (props) => {
         </div>
       )}
 
-      { getUser() && (
+      { getToken() && (
         <div>Hello <span style={{color:"red"}}>{getUser()}</span>! You are logged in already. <span onClick={() => logout(() => props.history.push('/'))}> Logout</span></div>
       )}
 
