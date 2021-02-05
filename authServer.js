@@ -55,15 +55,15 @@ app.get('/users', (req, res) => {
 //     }
 // })
 
-// POST /USERS  -- Creating a user
-app.post('/users', (req, res) => {
+// POST /users  -- Creating a user
+app.post('/users', async (req, res) => {
 
     const { email, password} = req.body;
 
-    const user = new User({ email: email });
+    const user = await new User({ email: email });
 
     user.setPassword(password) // hash & salt generator with crypto
-    console.log(user.email)
+    // console.log(user.email)
 
    //  console.log(user.hash + user.salt)
 
@@ -76,7 +76,72 @@ app.post('/users', (req, res) => {
     //     console.log(err)
     //   }
     // })
+})
 
+// POST /users/login -- Checks for existing user
+app.post('/users/login', async (req, res) => {
+
+  const {email, password } = req.body;
+
+  const user = await User.findOne({ email: email });
+
+  if (user == null) {
+      console.log('user not found')
+      return res.status(400).send('Cannot find user')
+      
+      //return res.send('User not found!')
+  }
+
+  if (await user.validPassword(password)) {
+    // if password matches
+
+    console.log("password matches!")
+
+    token = user.generateJWT()
+
+    res.status(200).json({
+      message: 'User logged in!',
+      email: user.email,
+      token: token
+    })
+    
+  } else {
+        res.status(400).json({
+        error: 'Password incorrect!'
+    })
+  }
+
+
+    // const user = users.find(user => user.name === req.body.name)
+    // if (user == null) {
+    //   return res.status(400).send('Cannot find user')
+    //   //return res.send('User not found!')
+    // }
+    // try {
+    //   if(await bcrypt.compare(req.body.password, user.password)) {
+
+    //     // Generating accessToken & refreshToken if user is found.
+    //     const accessToken = generateAccessToken(user)
+    //     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+    //     refreshTokens.push(refreshToken)
+    //     // res.json({ accessToken: accessToken, refreshToken: refreshToken })
+        
+    //     res.status(200).json({
+    //       message: 'User logged in!',
+    //       accessToken: accessToken,
+    //       refreshToken: refreshToken,
+    //       username: user.name
+    //     })
+
+    //   } else {
+    //     res.status(400).json({
+    //       error: 'Password incorrect!'
+    //     })
+    //   }
+    // } catch {
+    //   // Generic catch-all response
+    //   res.status(500).send('Lol')
+    // }
 })
 
 // Authentication below
@@ -113,38 +178,7 @@ app.delete('/logout', (req,res) => {
 //     res.json({ accessToken: accessToken, refreshToken: refreshToken })
 // })
 
-app.post('/users/login', async (req, res) => {
-    const user = users.find(user => user.name === req.body.name)
-    if (user == null) {
-      return res.status(400).send('Cannot find user')
-      //return res.send('User not found!')
-    }
-    try {
-      if(await bcrypt.compare(req.body.password, user.password)) {
 
-        // Generating accessToken & refreshToken if user is found.
-        const accessToken = generateAccessToken(user)
-        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-        refreshTokens.push(refreshToken)
-        // res.json({ accessToken: accessToken, refreshToken: refreshToken })
-        
-        res.status(200).json({
-          message: 'User logged in!',
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-          username: user.name
-        })
-
-      } else {
-        res.status(400).json({
-          error: 'Password incorrect!'
-        })
-      }
-    } catch {
-      // Generic catch-all response
-      res.status(500).send('Lol')
-    }
-  })
 
 function generateAccessToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })

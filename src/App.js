@@ -34,22 +34,15 @@ const  App = (props) => {
         })
         .then(response => {
             if (response.ok) {
-              alert('User logged in successfully.')
-              // authenticate(response)
+              alert('User Found!')
             } else {
               alert('User Not Found! Create a user first to log in.')
             }
             return response.json()
         }).then(data => {
-          console.log(data)
-          // authenticate user and store token and user name in session storage
-          // authenticate(data)
-
-          // console.log(data.accessToken)
-          // console.log(data.username)
-
-          sessionStorage.setItem('token', JSON.stringify(data.accessToken))
-          sessionStorage.setItem('user', JSON.stringify(data.username))
+          
+          sessionStorage.setItem('token', JSON.stringify(data.token))
+          sessionStorage.setItem('email', JSON.stringify(data.email))
           // JSON.parse(sessionStorage.getItem('token'))
           props.history.push('/')
         })
@@ -64,7 +57,7 @@ const  App = (props) => {
           <div>Log In</div>
           <form onSubmit={handleSubmit}>
             <label>Email</label>
-            <input type="text" value={email} name="email" onChange={handleChange('email')}></input>
+            <input type="email" value={email} name="email" onChange={handleChange('email')}></input>
 
             <label>Password</label>
             <input type="password" value={password} onChange={handleChange('password')} name="password"></input>
