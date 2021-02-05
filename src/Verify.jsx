@@ -29,7 +29,7 @@ class Verify extends React.Component {
             return response
         })
         .then(
-            this.props.history.push('/')
+                this.props.history.push('/')
         )
         .catch(error => console.log('ERROR'))
     }

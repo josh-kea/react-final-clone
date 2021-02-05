@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import App from './App';
+import Login from './Login';
 import Signup from './Signup';
 import Verify from './Verify';
+import AdminPage from './AdminPage';
+import AdminRoute from './AdminRoute';
 import './App.css';
 
 
@@ -10,9 +12,11 @@ const Routes = () => {
     return(
         <BrowserRouter>
             <Switch>
-                <Route path="/" exact component={App} />
+                <Route path="/" exact component={Login} />
                 <Route path="/signup" exact component={Signup} />
                 <Route path="/verify/:verifyString" exact component={Verify} />
+
+                <AdminRoute path="/admin" exact component={AdminPage} />
 
                 {/* <PrivateRoute path="/create" exact component={Create} />
                 <Route path="/post/:slug" exact component={SinglePost} />

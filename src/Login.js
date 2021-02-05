@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import {authenticate, getToken, logout, getUser } from './helpers.js';
 
-const  App = (props) => {
+const  Login = (props) => {
 
   const [state, setState] = useState( {
     email: '',
@@ -44,11 +44,8 @@ const  App = (props) => {
           sessionStorage.setItem('token', JSON.stringify(data.token))
           sessionStorage.setItem('email', JSON.stringify(data.email))
           // JSON.parse(sessionStorage.getItem('token'))
-
-          setTimeout(function(){
-            props.history.push('/')
-           }, 3000);
-
+          
+          props.history.push('/')
         })
         .catch(error => console.log(error))
     }
@@ -81,4 +78,4 @@ const  App = (props) => {
   );
 }
 
-export default withRouter(App);
+export default withRouter(Login);

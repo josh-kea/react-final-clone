@@ -28,6 +28,7 @@ export const getUser = () => {
         }
     }
 };
+
 // access token from session sessionStorage
 export const logout = (next) => {
     if(window !== 'undefined') {

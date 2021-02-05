@@ -116,6 +116,7 @@ app.get('/verifyEmail/:verifyString', async (req, res) =>{
   } else if (user) {
     user.isValid = true
     await user.save()
+    res.status(200).json()
   }
 })
 
@@ -205,6 +206,22 @@ app.post('/users/login', async (req, res) => {
     //   // Generic catch-all response
     //   res.status(500).send('Lol')
     // }
+})
+
+// GET/ admin
+app.get('/admin', async (req, res) =>{
+  const { email } = req.email
+
+  const user = await User.findOne({ email: email });
+
+  if (user == null) {
+    console.log('user not found')
+    return res.status(400).send('Cannot find user')
+
+  } else if (user) {
+    res.json(user);
+    res.status(200).json()
+  }
 })
 
 app.listen(4000)
