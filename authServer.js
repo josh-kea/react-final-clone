@@ -208,19 +208,21 @@ app.post('/users/login', async (req, res) => {
     // }
 })
 
-// GET/ admin
-app.get('/admin', async (req, res) =>{
+// POST/ admin
+app.post('/admin', async (req, res) =>{
   const { email } = req.email
 
   const user = await User.findOne({ email: email });
 
   if (user == null) {
-    console.log('user not found')
-    return res.status(400).send('Cannot find user')
+    return res.status(400).send('Cannot find user!')
 
   } else if (user) {
-    res.json(user);
-    res.status(200).json()
+    if (user.isAdmin) {
+      res.status(200).json(user);
+    } else if (!user.isAdmin) {
+      res.status(400).send('User is not an admin!')
+    }
   }
 })
 

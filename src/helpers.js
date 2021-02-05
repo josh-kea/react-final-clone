@@ -29,11 +29,26 @@ export const getUser = () => {
     }
 };
 
+
 // access token from session sessionStorage
 export const logout = (next) => {
     if(window !== 'undefined') {
         sessionStorage.removeItem('token')
         sessionStorage.removeItem('email')
+        sessionStorage.removeItem('isAdmin')
     }
     next();
 };
+
+export const isAdmin = () => {
+    if (window !== "undefined") {
+      if (sessionStorage.getItem("isAdmin")) {
+          if (JSON.parse(sessionStorage.getItem("isAdmin")) == true)
+              return true;
+          else {
+              return false;
+          }
+      }
+    }
+  };
+

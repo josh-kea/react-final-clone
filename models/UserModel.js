@@ -8,7 +8,8 @@ var UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
     verifyString: String,
-    isValid: { type: Boolean, default: false }
+    isValid: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: false }
 }, {timestamps: true});
 
 UserSchema.methods.setPassword = function(password){

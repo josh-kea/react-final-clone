@@ -43,6 +43,7 @@ const  Login = (props) => {
 
           sessionStorage.setItem('token', JSON.stringify(data.token))
           sessionStorage.setItem('email', JSON.stringify(data.email))
+          sessionStorage.setItem('isAdmin', JSON.stringify(data.isAdmin))
           // JSON.parse(sessionStorage.getItem('token'))
           
           props.history.push('/')
