@@ -40,14 +40,37 @@ export const logout = (next) => {
     next();
 };
 
-export const isAdmin = () => {
+export const isAdmin = async () => {
     if (window !== "undefined") {
-      if (sessionStorage.getItem("isAdmin")) {
-          if (JSON.parse(sessionStorage.getItem("isAdmin")) == true)
-              return true;
-          else {
-              return false;
-          }
+      if (getUser()) {
+        const email = getUser()
+        
+        await fetch('http://localhost:4000/admin', {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+            })
+        })
+        .then(response => {
+            return response.json()
+        }).then(data => {
+
+          // JSON.parse(sessionStorage.getItem('token'))
+          
+            if (data.isAdmin) {
+                return true
+            } else if (!data.isAdmin){
+                return false
+            }
+          
+        })
+        .catch(error => console.log(error))
+
+      } else if (!getUser()){
+          return false
       }
     }
   };

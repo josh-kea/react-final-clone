@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
-import { isAdmin } from './helpers.js';
+import { isAdmin, getUser } from './helpers.js';
 
 require("dotenv").config();
 
@@ -12,11 +12,11 @@ const AdminRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        !isAdmin() ? (
+        isAdmin() ? (
           <Component {...props} />
         ) : (
           <Redirect
-            to={{ pathname: "/login", state: { from: props.location } }}
+            to={{ pathname: "/", state: { from: props.location } }}
           />
         )
       }

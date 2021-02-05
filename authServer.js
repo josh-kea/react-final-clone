@@ -210,7 +210,7 @@ app.post('/users/login', async (req, res) => {
 
 // POST/ admin
 app.post('/admin', async (req, res) =>{
-  const { email } = req.email
+  const { email } = req.body
 
   const user = await User.findOne({ email: email });
 
@@ -218,12 +218,24 @@ app.post('/admin', async (req, res) =>{
     return res.status(400).send('Cannot find user!')
 
   } else if (user) {
-    if (user.isAdmin) {
-      res.status(200).json(user);
-    } else if (!user.isAdmin) {
-      res.status(400).send('User is not an admin!')
-    }
-  }
-})
+    res.status(200).json(user);
+}})
+
+// app.post('/admin', async (req, res) =>{
+//   const { email } = req.email
+
+//   const user = await User.findOne({ email: email });
+
+//   if (user == null) {
+//     return res.status(400).send('Cannot find user!')
+
+//   } else if (user) {
+//     if (user.isAdmin) {
+//       res.status(200).json(user);
+//     } else if (!user.isAdmin) {
+//       res.status(400).send('User is not an admin!')
+//     }
+//   }
+// })
 
 app.listen(4000)
