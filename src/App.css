@@ -48,3 +48,13 @@
   margin:0 auto;
   padding-top:20px;
 }
+
+.two-grid {
+  display:grid;
+  grid-template-columns: 0.3fr 1fr;
+  height:80vh;
+}
+
+#AdminPage {
+
+}

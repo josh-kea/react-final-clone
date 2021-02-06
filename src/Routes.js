@@ -3,7 +3,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
 import Verify from './Verify';
-import AdminPage from './AdminPage';
+import AdminHome from './AdminHome';
+import AdminProducts from './AdminProducts';
 import AdminRoute from './AdminRoute';
 import './App.css';
 
@@ -16,7 +17,8 @@ const Routes = () => {
                 <Route path="/signup" exact component={Signup} />
                 <Route path="/verify/:verifyString" exact component={Verify} />
 
-                <AdminRoute path="/admin" exact component={AdminPage} />
+                <AdminRoute path="/admin" exact component={AdminHome} />
+                <AdminRoute path="/admin/products" exact component={AdminProducts} />
 
                 {/* <PrivateRoute path="/create" exact component={Create} />
                 <Route path="/post/:slug" exact component={SinglePost} />

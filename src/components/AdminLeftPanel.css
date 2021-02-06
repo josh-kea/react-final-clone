@@ -1,0 +1,13 @@
+#AdminLeftPanel {
+    border-right:0.1rem solid #DFE3E8;
+    padding: 20px 20px;
+    height:100%;
+
+
+    
+}
+
+.left-panel-list {
+    display:grid;
+    grid-row-gap: 20px;
+}
