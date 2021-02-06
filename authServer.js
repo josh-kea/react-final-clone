@@ -219,6 +219,23 @@ app.post('/users/login', async (req, res) => {
     
   })
 
+  // GET /users  -- Listing users
+  app.get('/users/:id', async (req, res) => {
+    const { id } = req.params
+    // let users = await User.find({})
+    // console.log(users)
+  
+    User.findOne({ _id: id}, await function(err, user) {
+      if (err) { 
+          console.log(err) 
+      }
+      res.status(200).json(user)
+    })
+  
+
+    
+  })
+
 // POST/ admin
 app.post('/admin', async (req, res) =>{
   const { email } = req.body

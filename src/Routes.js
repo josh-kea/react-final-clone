@@ -6,6 +6,7 @@ import Verify from './Verify';
 import AdminHome from './AdminHome';
 import AdminProducts from './AdminProducts';
 import AdminUsers from './AdminUsers';
+import AdminSingleUser from './AdminSingleUser';
 import AdminRoute from './AdminRoute';
 import './App.css';
 
@@ -21,6 +22,7 @@ const Routes = () => {
                 <AdminRoute path="/admin" exact component={AdminHome} />
                 <AdminRoute path="/admin/products" exact component={AdminProducts} />
                 <AdminRoute path="/admin/users" exact component={AdminUsers} />
+                <AdminRoute path="/admin/users/:id" exact component={AdminSingleUser} />
 
                 {/* <PrivateRoute path="/create" exact component={Create} />
                 <Route path="/post/:slug" exact component={SinglePost} />
