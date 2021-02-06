@@ -7,7 +7,16 @@
     
 }
 
+#AdminLeftPanel a {
+    padding:10px 20px;
+}
+
 .left-panel-list {
     display:grid;
     grid-row-gap: 20px;
+}
+
+.active-panel {
+    background-color:#EDEEEF;
+    color:#138468;
 }
