@@ -7,22 +7,13 @@ import AdminLeftPanel from "./components/AdminLeftPanel";
 require("dotenv").config();
 
 const AdminHome = (props) => {
-  const [state, setState] = useState({
-    page: "Home"
-  });
-
-  function handleChange(stateProperty) {
-    return function (event) {
-      setState({ ...state, [stateProperty]: event.target.value });
-    };
-  }
 
   return (
     <div id="AdminHome">
       <AdminNav></AdminNav>
       <div className="two-grid">
 
-        <AdminLeftPanel></AdminLeftPanel>
+        <AdminLeftPanel activePanel={"products"}></AdminLeftPanel>
 
         <div id="AdminRightPanel">
             

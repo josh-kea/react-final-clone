@@ -4,7 +4,8 @@ import { getUser, logout } from '../helpers'
 import './AdminLeftPanel.css'
 
 const AdminLeftPanel = (props) => {
-    console.log(props);
+    console.log(props.activePanel);
+    
     return(
     <div id="AdminLeftPanel">
 

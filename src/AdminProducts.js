@@ -7,14 +7,13 @@ import AdminLeftPanel from "./components/AdminLeftPanel";
 require("dotenv").config();
 
 const AdminProducts = (props) => {
-console.log(props);
 
   return (
     <div id="AdminPage">
       <AdminNav></AdminNav>
       <div className="two-grid">
 
-        <AdminLeftPanel></AdminLeftPanel>
+        <AdminLeftPanel activePanel={"products"}></AdminLeftPanel>
 
         <div id="AdminRightPanel">
             
