@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import AdminNav from "./components/AdminNav";
 import AdminLeftPanel from "./components/AdminLeftPanel";
 
-require("dotenv").config();
+import AllProducts from "./components/products/AllProducts";
 
 const AdminProducts = (props) => {
 
@@ -16,7 +16,7 @@ const AdminProducts = (props) => {
         <AdminLeftPanel activePanel={"Products"}></AdminLeftPanel>
 
         <div id="AdminRightPanel">
-            
+            <AllProducts></AllProducts>
         </div>
 
       </div>

@@ -2,18 +2,19 @@
     border-right:0.1rem solid #DFE3E8;
     padding: 20px 20px;
     height:100%;
+    background-color:#F6F6F7;
 
 
     
 }
 
 #AdminLeftPanel a {
-    padding:10px 20px;
+    padding:5px 20px;
 }
 
 .left-panel-list {
     display:grid;
-    grid-row-gap: 20px;
+    grid-row-gap: 10px;
 }
 
 .active-panel {

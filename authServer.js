@@ -17,14 +17,10 @@ const bcrypt = require('bcrypt')
 // Rate limiting
 const rateLimiter = require("express-rate-limit");
 
-app.use("/users", rateLimiter({
-    windowMs: 15 * 60 * 1000, // 15 mins
-    max: 15 // limit each IP to 100 request per windowMs
-}))
-
-app.use(express.json())
-// middlewares - implement cors
-app.use(cors());
+// app.use("/users", rateLimiter({
+//     windowMs: 15 * 60 * 1000, // 15 mins
+//     max: 15 // limit each IP to 100 request per windowMs
+// }))
 
 // db mongoose connection to MongoDB
 
@@ -37,10 +33,10 @@ mongoose.connect(process.env.DATABASE, {
 .then(() => console.log('DB Connected'))
 .catch(err => console.log(err));
 
-
-app.get('/users', (req, res) => {
-  res.json(users)
-})
+// middlewares - implement cors
+app.use(express.json())
+app.use(morgan('dev'));
+app.use(cors());
 
 // Creating user with bcrypt hashed password
 // POST /USERS  -- Creating a user
@@ -174,8 +170,6 @@ app.post('/users/login', async (req, res) => {
         error: 'Password incorrect!'
     })
   }
-
-
     // const user = users.find(user => user.name === req.body.name)
     // if (user == null) {
     //   return res.status(400).send('Cannot find user')
@@ -207,6 +201,23 @@ app.post('/users/login', async (req, res) => {
     //   res.status(500).send('Lol')
     // }
 })
+
+  // GET /users  -- Listing users
+  app.get('/users', async (req, res) => {
+
+    // let users = await User.find({})
+    // console.log(users)
+  
+    User.find({}, await function(err, users) {
+      if (err) { 
+          console.log(err) 
+      }
+      res.status(200).json(users)
+    }).sort({ createdAt: -1})
+  
+
+    
+  })
 
 // POST/ admin
 app.post('/admin', async (req, res) =>{

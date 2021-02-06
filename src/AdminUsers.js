@@ -4,17 +4,19 @@ import { Link, withRouter } from "react-router-dom";
 import AdminNav from "./components/AdminNav";
 import AdminLeftPanel from "./components/AdminLeftPanel";
 
-const AdminHome = (props) => {
+import AllUsers from "./components/users/AllUsers";
+
+const AdminUsers = (props) => {
 
   return (
-    <div id="AdminHome">
+    <div id="AdminPage">
       <AdminNav></AdminNav>
       <div className="two-grid">
 
-        <AdminLeftPanel activePanel={"Home"}></AdminLeftPanel>
+        <AdminLeftPanel activePanel={"Users"}></AdminLeftPanel>
 
         <div id="AdminRightPanel">
-            
+          <AllUsers></AllUsers>
         </div>
 
       </div>
@@ -22,4 +24,4 @@ const AdminHome = (props) => {
   );
 };
 
-export default AdminHome;
+export default AdminUsers;

@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto'); // Using node built in crypto library for password hashing and salt generation
 var jwt = require('jsonwebtoken');
-require('dotenv').config()
+
+const { ObjectId } = mongoose.Schema;
 
 var UserSchema = new mongoose.Schema({
     email: String,

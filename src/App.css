@@ -51,7 +51,7 @@
 
 .two-grid {
   display:grid;
-  grid-template-columns: 0.3fr 1fr;
+  grid-template-columns: 0.2fr 1fr;
   height:80vh;
 }
 

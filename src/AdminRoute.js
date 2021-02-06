@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { isAdmin, getUser } from './helpers.js';
 
-require("dotenv").config();
-
 // checking if User isAdmin from express
 
 

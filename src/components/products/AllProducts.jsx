@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { getUser, logout } from '../helpers'
-import './AdminLeftPanel.css'
+import { getUser, logout } from '../../helpers'
+import './AllProducts.css'
 
-const AdminLeftPanel = (props) => {
-    console.log(props.activePanel);
+const AllProducts = (props) => {
+    const [products, setProducts] = useState([]);
 
     return(
-    <div id="AdminLeftPanel">
+    <div id="AllProducts">
 
             <div className="left-panel-list">
 
                 {/* When activePanel is Home */}
 
-                {props.activePanel === "Home" ? (
+                {props.activePanel == "Home" ? (
                         <Link to="/admin" className="active-panel">Home</Link>
                     ) : (
                         <Link to="/admin">Home</Link>
@@ -23,7 +23,7 @@ const AdminLeftPanel = (props) => {
                 {/* When activePanel is Products */}
 
 
-                {props.activePanel === "Products" ? (
+                {props.activePanel == "Products" ? (
                        <Link to="/admin/products" className="active-panel">Products</Link>
                     ) : (
                         <Link to="/admin/products">Products</Link>
@@ -32,7 +32,7 @@ const AdminLeftPanel = (props) => {
 
                 {/* When activePanel is Users */}
 
-                {props.activePanel === "Users" ? (
+                {props.activePanel == "Users" ? (
                        <Link to="/admin/users" className="active-panel">Users</Link>
                     ) : (
                         <Link to="/admin/users">Users</Link>
@@ -48,4 +48,4 @@ const AdminLeftPanel = (props) => {
 }
 
 
-export default withRouter(AdminLeftPanel);
+export default withRouter(AllProducts);
