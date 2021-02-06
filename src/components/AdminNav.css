@@ -1,0 +1,21 @@
+
+
+.navbar ul {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    padding:25px 40px;
+}
+
+.navbar {
+    border-bottom: 0.1rem solid #DFE3E8;
+}
+
+a {
+    text-decoration:none;
+    color:black;
+}
+
+li {
+    list-style:none;
+}
