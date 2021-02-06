@@ -13,7 +13,7 @@ const AdminHome = (props) => {
       <AdminNav></AdminNav>
       <div className="two-grid">
 
-        <AdminLeftPanel activePanel={"products"}></AdminLeftPanel>
+        <AdminLeftPanel activePanel={"Home"}></AdminLeftPanel>
 
         <div id="AdminRightPanel">
             
