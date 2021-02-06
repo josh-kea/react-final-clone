@@ -1,14 +1,85 @@
 #AllUsers{
+    background-color:#F6F6F7;
+    padding:25px;
+    height:100%;
+
+   
+    
+}
+
+.user-rows {
     display:grid;
-    grid-row-gap:10px;
+    background-color:white;
+    margin-top:20px;
+    border-radius:10px;
+    border:0.1rem solid #DFE3E8;
 }
 
 .user-row {
     border-bottom:0.1rem solid #DFE3E8;
     padding:10px 20px;
+    display:grid;
+    grid-template-columns:1fr 0.5fr 0.5fr;
+    font-size:14px;
+}
+
+.user-row:not(:last-child) {
+    border-bottom:0.1rem solid #DFE3E8;
+}
+.user-row:hover {
+    background-color:#F6F6F7;
 }
 
 .total-users-row {
     padding:10px 20px;
     border-bottom:0.1rem solid #DFE3E8;
+    display:flex;
+    justify-content:space-between;
+}
+
+.row-badge {
+    border-radius:10px;
+    padding:4px 10px;
+    display:block;
+    text-align:center;
+    width:100%;
+    max-width:90px;
+    font-size:13px;
+
+}
+
+.user-badge {
+    background-color:#DFE3E8;
+}
+
+.admin-badge {
+    background-color:#138468;
+    color:white;
+}
+
+
+.valid-email {
+    background-color:#AEE9D1;
+    font-size:13px;
+    
+}
+
+.invalid-email {
+    background-color:#F7C6C5;
+    font-size:13px;
+   
+}
+
+.user-view-button {
+    
+    background-color:#F6F6F7;
+    padding: 4px 8px;
+    text-align:center;
+    border-radius:5px;
+    font-size:13px;
+    
+}
+
+.user-row-email {
+    font-weight:600;
 }
