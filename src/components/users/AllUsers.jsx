@@ -99,7 +99,7 @@ const AllUsers = (props) => {
             <div className="total-users-row">
                 <div>{users.length} Total Users</div>
                 <div><span>Sort By </span>
-                    <select value={sortMethod} name="sortBy" onChange={(e) => handleSortMethodChange(e)}>
+                    <select className="sort" value={sortMethod} name="sortBy" onChange={(e) => handleSortMethodChange(e)}>
                         <option value="desc">Newest First</option>
                         <option value="asc">Oldest First</option>
                     </select>

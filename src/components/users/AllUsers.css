@@ -87,3 +87,10 @@
 .user-row-date-created {
     font-size:12px;
 }
+
+.sort {
+    padding:5px 10px;
+    box-sizing:border-box;
+    border:0.1rem solid #DFE3E8;
+    border-radius:5px;
+}
