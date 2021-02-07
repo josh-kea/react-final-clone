@@ -7,6 +7,13 @@ const SingleUser = (props) => {
     const [user, setUser] = useState([]);
     const [isModalActive, setModalState] = useState(false);
 
+    const [modalContent, setModalContent] = useState({
+        firstName: '',
+        lastName:'',
+        email:'',
+        phone:''
+    })
+
     // console.log(props)
 
 
@@ -21,8 +28,7 @@ const SingleUser = (props) => {
             return response.json()
         }).then(data => {
 
-            setUser(data)
-          
+            setUser(data)          
         })
         .catch(error => console.log(error))
     }
@@ -31,6 +37,12 @@ const SingleUser = (props) => {
     useEffect(() => {
         fetchUser();
     }, [])
+
+    // Below useEffect runs once when the component updates.
+    useEffect(() => {
+
+    });
+
 
     let currentDate = new Date();
     const dateCreated = new Date(user.createdAt);
@@ -51,9 +63,25 @@ const SingleUser = (props) => {
 
     }
 
+    function handleChange(name) {
+        return function(event) {
+            setModalContent({ ...user, [name]: event.target.value })
+        };
+      };
+
 
     const handleUserEditClick = () => {
         showEditUserModal();
+    }
+
+    function toggleModal(bool) {
+        setModalState(bool)
+        setModalContent({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email:user.email,
+            phone:user.phone
+        }) 
     }
 
     const editUserModal = () => {
@@ -69,28 +97,28 @@ const SingleUser = (props) => {
                         <div class="form-row">
                             <div class="row-wrapper">
                                 <p>First Name</p>
-                                <input type="text" value={user.firstName}/>
+                                <input type="text" value={modalContent.firstName} onChange={handleChange('firstName')}/>
                             </div >
                             <div class="row-wrapper">
                                 <p>Last Name</p>
-                                <input type="text" value={user.lastName}/>
+                                <input type="text" value={modalContent.lastName} onChange={handleChange('lastName')}/>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="row-wrapper">
                                 <p>Email</p>
-                                <input type="text" value={user.email}/>
+                                <input type="text" value={modalContent.email} onChange={handleChange('email')}/>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="row-wrapper">
                                 <p>Phone Number</p>
-                                <input type="text" value={user.phone}/>
+                                <input type="text" value={modalContent.phone} onChange={handleChange('phone')}/>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="row-wrapper  row-end">
-                                <div className="form-btn" onClick={() => setModalState(false)}>Cancel</div>
+                                <div className="form-btn" onClick={() => toggleModal(false)}>Cancel</div>
                                 <div className="form-btn">Save</div>
                             </div>
                         </div>
@@ -117,7 +145,7 @@ const SingleUser = (props) => {
             <div className="overview-card">
                 <div className="overview-card-header">
                     <p className="card-title">User overview</p>
-                    <p className="overview-edit-btn" onClick={() => setModalState(true)}>Edit</p>
+                    <p className="overview-edit-btn" onClick={() => toggleModal(true)}>Edit</p>
                 </div>
                     <div className="overview-card-info">
                     
