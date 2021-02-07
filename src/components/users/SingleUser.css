@@ -1,0 +1,53 @@
+.single-user-header{
+    display:flex;
+    
+}
+
+.single-user-header h2{
+    margin-left:20px;
+    font-size:20px;
+    
+}
+
+#SingleUser {
+    background-color:#F6F6F7;
+    height:100%;
+    padding:25px 50px;
+}
+
+.back-icon{
+    width:30px;
+    height:30px;
+}
+
+.card-grid {
+    display:grid;
+    grid-template-columns: 1fr 0.7fr;
+    grid-row-gap:20px;
+    grid-column-gap:20px;
+}
+
+.user-card {
+    background-color:white;
+    border-radius:10px;
+    border:0.1rem solid #DFE3E8;
+}
+.user-card-header {
+    display:flex;
+}
+.overview-card {
+    background-color:white;
+    border-radius:10px;
+    border:0.1rem solid #DFE3E8;
+}
+.timeline-card {
+    background-color:white;
+    border-radius:10px;
+    border:0.1rem solid #DFE3E8;
+}
+
+.user-card img {
+    width:40px;
+    height:40px;
+}
+
