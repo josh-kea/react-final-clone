@@ -6,15 +6,13 @@ var jwt = require('jsonwebtoken');
 const { ObjectId } = mongoose.Schema;
 
 var UserSchema = new mongoose.Schema({
-    email: String,
+    email: {type: String, unique: true},
+    firstName: String,
+    lastName: String,
+    phone: Number,
     hash: String,
     salt: String,
     verifyString: String,
-    profilePicture:
-    {
-        data: Buffer,
-        contentType: String
-    },
     isValid: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false }
 }, {timestamps: true});

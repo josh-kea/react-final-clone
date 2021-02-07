@@ -1,10 +1,10 @@
-require('dotenv').config()
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer')
-
 const express = require('express')
+require('dotenv').config()
+
 const app = express()
 const jwt = require('jsonwebtoken')
 const { restart } = require('nodemon')
@@ -116,25 +116,40 @@ app.get('/verifyEmail/:verifyString', async (req, res) =>{
   }
 })
 
-// POST /users  -- Creating a user
+// POST /users  -- Registering a user
 app.post('/users', async (req, res) => {
 
-    const { email, password} = req.body;
+    const { firstName, lastName, email, password} = req.body;
 
-      const user = await new User({ email: email });
+      const existingUser = await User.findOne({ email: email });
 
-      await user.setPassword(password) // hash & salt generator with crypto
-      // console.log(user.email)
+      if (!existingUser) {
+        const user = await new User({ firstName:firstName, lastName:lastName, email: email });
 
-    //  console.log(user.hash + user.salt)
+        await user.setPassword(password) // hash & salt generator with crypto
+        // console.log(user.email)
+  
+      //  console.log(user.hash + user.salt)
+  
+        await user.generateEmailVerificationString(email)
+  
+        await user.save()
+  
+        token = user.generateJWT()
+  
+        sendVerificationMail(email, user.verifyString)
+        
+        res.status(200).json({
+          "authToken": token,
+          message: 'User created successfully!',
+        });
+      } else {
+        res.status(409).json({
+          message: 'User already exists!',
+        });
+      }
 
-      await user.generateEmailVerificationString(email)
 
-      await user.save()
-
-      sendVerificationMail(email, user.verifyString)
-      
-      res.json(user);
 
 })
 
