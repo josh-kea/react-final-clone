@@ -155,51 +155,25 @@ app.post('/users/login', async (req, res) => {
   if (await user.validPassword(password)) {
     // if password matches
 
-    console.log("password matches!")
-
     token = user.generateJWT()
 
-    res.status(200).json({
+    await res.status(200)
+    await res.header('auth-token', token)
+    await res.json({
+      "authToken": token,
       message: 'User logged in!',
       email: user.email,
-      token: token
-    })
+      isAdmin: user.isAdmin
+    });
+   
+    const authorizedUser = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log(req.cookies)
     
   } else {
         res.status(400).json({
         error: 'Password incorrect!'
     })
   }
-    // const user = users.find(user => user.name === req.body.name)
-    // if (user == null) {
-    //   return res.status(400).send('Cannot find user')
-    //   //return res.send('User not found!')
-    // }
-    // try {
-    //   if(await bcrypt.compare(req.body.password, user.password)) {
-
-    //     // Generating accessToken & refreshToken if user is found.
-    //     const accessToken = generateAccessToken(user)
-    //     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-    //     refreshTokens.push(refreshToken)
-    //     // res.json({ accessToken: accessToken, refreshToken: refreshToken })
-        
-    //     res.status(200).json({
-    //       message: 'User logged in!',
-    //       accessToken: accessToken,
-    //       refreshToken: refreshToken,
-    //       username: user.name
-    //     })
-
-    //   } else {
-    //     res.status(400).json({
-    //       error: 'Password incorrect!'
-    //     })
-    //   }
-    // } catch {
-    //   // Generic catch-all response
-    //   res.status(500).send('Lol')
-    // }
 })
 
   // GET /users  -- Listing users
@@ -248,22 +222,5 @@ app.post('/admin', async (req, res) =>{
   } else if (user) {
     res.status(200).json(user);
 }})
-
-// app.post('/admin', async (req, res) =>{
-//   const { email } = req.email
-
-//   const user = await User.findOne({ email: email });
-
-//   if (user == null) {
-//     return res.status(400).send('Cannot find user!')
-
-//   } else if (user) {
-//     if (user.isAdmin) {
-//       res.status(200).json(user);
-//     } else if (!user.isAdmin) {
-//       res.status(400).send('User is not an admin!')
-//     }
-//   }
-// })
 
 app.listen(4000)

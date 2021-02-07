@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var crypto = require('crypto'); // Using node built in crypto library for password hashing and salt generation
 var jwt = require('jsonwebtoken');
 
+
 const { ObjectId } = mongoose.Schema;
 
 var UserSchema = new mongoose.Schema({
@@ -9,6 +10,11 @@ var UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
     verifyString: String,
+    profilePicture:
+    {
+        data: Buffer,
+        contentType: String
+    },
     isValid: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false }
 }, {timestamps: true});
@@ -32,6 +38,7 @@ UserSchema.methods.generateJWT = function() {
     return jwt.sign({
         id: this._id,
         email: this.email,
+        isAdmin: this.isAdmin,
         exp: parseInt(exp.getTime() / 1000),
         }, process.env.JWT_SECRET);
 };

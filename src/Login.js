@@ -1,7 +1,8 @@
+
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import {authenticate, getToken, logout, getUser } from './helpers.js';
+import {authenticate, verifyToken, logout, getUser } from './helpers.js';
 
 const  Login = (props) => {
 
@@ -33,20 +34,21 @@ const  Login = (props) => {
             })
         })
         .then(response => {
-            if (response.ok) {
-              alert('User Found!')
-            } else {
+            if (!response.ok) {
               alert('User Not Found! Create a user first to log in.')
             }
+
             return response.json()
         }).then(data => {
-
-          sessionStorage.setItem('token', JSON.stringify(data.token))
-          sessionStorage.setItem('email', JSON.stringify(data.email))
-          sessionStorage.setItem('isAdmin', JSON.stringify(data.isAdmin))
-          // JSON.parse(sessionStorage.getItem('token'))
           
-          props.history.push('/')
+          // Set JWT token in sessionStorage, to verify later
+          sessionStorage.setItem('token', JSON.stringify(data.authToken))
+
+          if (data.isAdmin) {
+            props.history.push('/admin')
+          } else {
+            props.history.push('/')
+          }
         })
         .catch(error => console.log(error))
     }
@@ -54,7 +56,7 @@ const  Login = (props) => {
   return (
     
     <div className="container">
-      { !getToken() && (
+      { !verifyToken() && (
         <div>        
           <div>Log In</div>
           <form onSubmit={handleSubmit}>
@@ -71,7 +73,7 @@ const  Login = (props) => {
         </div>
       )}
 
-      { getToken() && (
+      { verifyToken() && (
         <div>Hello <span style={{color:"red"}}>{getUser()}</span>! You are logged in already. <span onClick={() => logout(() => props.history.push('/'))}> Logout</span></div>
       )}
 
