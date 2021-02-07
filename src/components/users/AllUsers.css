@@ -83,3 +83,7 @@
 .user-row-email {
     font-weight:600;
 }
+
+.user-row-date-created {
+    font-size:12px;
+}

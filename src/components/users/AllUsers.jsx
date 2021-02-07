@@ -36,15 +36,11 @@ const AllUsers = (props) => {
 
     function sortUsers(sortMethod) {
         let sortedUsers;
-        console.log(users)
 
         switch(sortMethod){
             case "asc":
-                console.log("Ascending")
                 sortedUsers = users.sort((a,b) => 
                     {
-                        console.log(a.createdAt)
-                        console.log(b.createdAt)
                         a.date = new Date(a.createdAt);
                         b.date = new Date(b.createdAt);
                         return b.date - a.date;
@@ -53,11 +49,8 @@ const AllUsers = (props) => {
                 setUsers(sortedUsers)
                 break;
             case "desc":
-                console.log("Descending")
                 sortedUsers = users.sort((a,b) => 
                     {
-                        console.log(a.createdAt)
-                        console.log(b.createdAt)
                         a.date = new Date(a.createdAt);
                         b.date = new Date(b.createdAt);
                         return a.date - b.date;
@@ -70,10 +63,17 @@ const AllUsers = (props) => {
         }
     }
 
-    // Everytime component mounts, useEffect hook will run.
+    // Below useEffect runs once when the component mounts.
     useEffect(() => {
+        console.log("UseEffect Mounted")
         fetchUsers();        
     }, [])
+
+    // Below useEffect runs once when the component updates.
+    useEffect(() => {
+        console.log("UseEffect Update")        
+        
+    });
 
     function handleSortMethodChange(event) {
         // Setting the sort method state
@@ -82,13 +82,23 @@ const AllUsers = (props) => {
         sortUsers(sortMethod);
     }
 
+    const createdAt = (user) => {
+        const createdAtDate = new Date(user.createdAt)
+        let dateString = createdAtDate.toString()
+        dateString = dateString.split(' ').slice(0, 5).join(' ');
+
+        return (
+            <div className="user-row-date-created"><p>{dateString}</p></div>
+        )
+    }
+
     return(
     <div id="AllUsers">
         <h1>Users</h1>
         <div className="user-rows">
             <div className="total-users-row">
                 <div>{users.length} Total Users</div>
-                <div>Sort By 
+                <div><span>Sort By </span>
                     <select value={sortMethod} name="sortBy" onChange={(e) => handleSortMethodChange(e)}>
                         <option value="desc">Newest First</option>
                         <option value="asc">Oldest First</option>
@@ -102,7 +112,7 @@ const AllUsers = (props) => {
                             <div className="user-row-email">{user.email}</div>
                             { user.isAdmin ? (<div className="row-badge admin-badge">Admin</div>) : (<div className="row-badge user-badge">User</div>) }
                             { user.isValid ? (<div className="row-badge valid-email">Valid Email</div>) : (<div className="row-badge invalid-email">Invalid Email</div>) }
-                            {user.createdAt}
+                            {createdAt(user)}
                         </Link>
                     )
                 })
