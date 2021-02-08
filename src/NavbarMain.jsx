@@ -21,7 +21,7 @@ const NavbarMain = (props) => {
 
             {getUser() && (
                 <div>
-                    <p onClick={() => logout(() => props.history.push('/'))}>Logout</p>
+                    <p className="login-btn" onClick={() => logout(() => props.history.push('/'))}>Logout</p>
                 </div>
             )}
         </div>

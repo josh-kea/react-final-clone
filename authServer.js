@@ -1,9 +1,10 @@
 require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
-const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
+const slugify = require('slugify');
 const express = require("express");
+
 
 const app = express();
 const jwt = require("jsonwebtoken");
@@ -11,6 +12,7 @@ const { restart } = require("nodemon");
 
 const mongoose = require("mongoose");
 const User = require("./models/UserModel"); // Register user model
+const Product = require("./models/ProductModel"); // Register product model
 
 // Bcrypt for password hashing and dehashing
 const bcrypt = require("bcrypt");
@@ -237,5 +239,53 @@ app.post("/admin", async (req, res) => {
     res.status(200).json(user);
   }
 });
+
+// GET PRODUCTS -- Listing products
+
+app.get("/products", async (req, res) => {
+
+  Product.find(
+    {},
+    await function (err, products) {
+      if (err) {
+        console.log(err);
+      }
+      res.status(200).json(products);
+    }
+  ).sort({ createdAt: -1 });
+});
+
+// GET PRODUCTS -- Listing products
+
+app.post("/products/add", async (req, res) => {
+
+  const { title, content, product_cost, selling_price, aliexpress_link } = req.body
+  const slug = slugify(title)// My Post my-post
+
+  switch(true) {
+      case !title:
+          return res.status(400).json({
+              error: 'Title is required'
+          })
+      case !content:
+          return res.status(400).json({
+              error: 'Content is required'
+          })
+  }
+
+  const profit_margin = selling_price - product_cost;
+  
+  
+  Product.create({ title, content, product_cost, selling_price, profit_margin, aliexpress_link, slug }, (err, product) => {
+      if(err){
+          console.log(err)
+          res.status(400).json({ error: 'Duplicate post. Try another title.'})
+      }
+
+      res.json(product);
+  });
+
+});
+
 
 app.listen(4000);

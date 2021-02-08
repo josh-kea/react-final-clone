@@ -92,7 +92,7 @@ const  HomePage = (props) => {
             </div>
           </div>
 
-          <div class="home-products-section medium-width">
+          <div className="home-products-section medium-width">
           <h2 className="home-products-header">Our Latest Curated <span className="accent-purple">Winning</span> Products</h2>
           <HomeAllProducts></HomeAllProducts>
           </div>

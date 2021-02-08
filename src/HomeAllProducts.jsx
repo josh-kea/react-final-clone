@@ -3,18 +3,11 @@ import { Link, withRouter } from 'react-router-dom'
 import './HomeAllProducts.css'
 
 const HomeAllProducts = (props) => {
-    const [users, setUsers] = useState([]);
+    const [products, setProducts] = useState([]);
     const [sortMethod, setSortMethod] = useState("desc");
 
-    // console.log(sortMethod)
-     // 
-
-    const params = props.location.search;
-    const sortByQuery = new URLSearchParams(params).get('sortBy');
-
-
-    function fetchUsers(){
-        fetch(`http://localhost:4000/users`, {
+    function fetchProducts(){
+        fetch(`http://localhost:4000/products`, {
             method:'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,7 +17,7 @@ const HomeAllProducts = (props) => {
             return response.json()
         }).then(data => {
             // Sort users before displaying them
-            setUsers(data)
+            setProducts(data)
             //const sortedUsers = sortUsers(data, sortByQuery);
             //setUsers(...users, sortedUsers);
           // JSON.parse(sessionStorage.getItem('token'))
@@ -33,39 +26,39 @@ const HomeAllProducts = (props) => {
         .catch(error => console.log(error))
     }
 
-    function sortUsers(sortMethod) {
-        let sortedUsers;
+    function sortProducts(sortMethod) {
+        let sortedProducts;
 
         switch(sortMethod){
             case "asc":
-                sortedUsers = users.sort((a,b) => 
+                sortedProducts = products.sort((a,b) => 
                     {
                         a.date = new Date(a.createdAt);
                         b.date = new Date(b.createdAt);
                         return b.date - a.date;
                     }
                 )
-                setUsers(sortedUsers)
+                setProducts(sortedProducts)
                 break;
             case "desc":
-                sortedUsers = users.sort((a,b) => 
+                sortedProducts = products.sort((a,b) => 
                     {
                         a.date = new Date(a.createdAt);
                         b.date = new Date(b.createdAt);
                         return a.date - b.date;
                     }
                 )
-                setUsers(sortedUsers)
+                setProducts(sortedProducts)
                 break;
             default:
-                return users;
+                return products;
         }
     }
 
     // Below useEffect runs once when the component mounts.
     useEffect(() => {
         console.log("UseEffect Mounted")
-        fetchUsers();        
+        fetchProducts();        
     }, [])
 
     // Below useEffect runs once when the component updates.
@@ -78,25 +71,15 @@ const HomeAllProducts = (props) => {
         // Setting the sort method state
         setSortMethod(event.target.value);
 
-        sortUsers(sortMethod);
-    }
-
-    const createdAt = (user) => {
-        const createdAtDate = new Date(user.createdAt)
-        let dateString = createdAtDate.toString()
-        dateString = dateString.split(' ').slice(0, 5).join(' ');
-
-        return (
-            <div className="user-row-date-created"><p>{dateString}</p></div>
-        )
+        sortProducts(sortMethod);
     }
 
     return(
     <div id="HomeAllProducts">
-        <h1>Users</h1>
+        <h1>Products</h1>
         <div className="user-rows">
             <div className="total-users-row">
-                <div>{users.length} Total Users</div>
+                <div>{products.length} Total Products</div>
                 <div><span>Sort By </span>
                     <select className="sort" value={sortMethod} name="sortBy" onChange={(e) => handleSortMethodChange(e)}>
                         <option value="desc">Newest First</option>
@@ -104,21 +87,23 @@ const HomeAllProducts = (props) => {
                     </select>
                 </div>
             </div>
+            </div>
+
+            <div className="all-products-grid">
             {
-                users.map((user, i) => {
+                products.map((product, i) => {
                     return (
-                        <Link to={`/admin/users/${user._id}`} className="user-row" key={user._id}>
-                            <div className="user-row-email">{user.email}</div>
-                            { user.isAdmin ? (<div className="row-badge admin-badge">Admin</div>) : (<div className="row-badge user-badge">User</div>) }
-                            { user.isValid ? (<div className="row-badge valid-email">Valid Email</div>) : (<div className="row-badge invalid-email">Invalid Email</div>) }
-                            {createdAt(user)}
-                        </Link>
+                        <div className="product-grid-item">
+                            <img src="https://ae01.alicdn.com/kf/Hecc63e829b5a498fb16257485d35293cP/U-Shape-Trigger-Point-Massage-Roller-for-Arm-Leg-Neck-Muscle-Tissue-for-Fitness-Gym-Yoga.jpg_50x50.jpg_.webp"></img>
+                            <div className="product-grid-details">
+                                <p className="product-grid-title">{product.title}</p>
+                                <p className="product-grid-profit">Potential Profit: ${product.profit_margin.toFixed(2)}</p>
+                            </div>
+                        </div>
                     )
                 })
             }
-        </div>
-
-
+            </div>
 
     </div>
     )
