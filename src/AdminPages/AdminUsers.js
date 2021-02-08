@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { isAdmin } from "./helpers.js";
-import { Link, withRouter } from "react-router-dom";
 import AdminNav from "./components/AdminNav";
 import AdminLeftPanel from "./components/AdminLeftPanel";
 
-import SingleUser from "./components/users/SingleUser";
+import AllUsers from "./components/users/AllUsers";
 
-const AdminSingleUser = (props) => {
+const AdminUsers = (props) => {
 
   return (
     <div id="AdminPage">
@@ -16,7 +14,7 @@ const AdminSingleUser = (props) => {
         <AdminLeftPanel activePanel={"Users"}></AdminLeftPanel>
 
         <div id="AdminRightPanel">
-          <SingleUser></SingleUser>
+          <AllUsers></AllUsers>
         </div>
 
       </div>
@@ -24,4 +22,4 @@ const AdminSingleUser = (props) => {
   );
 };
 
-export default AdminSingleUser;
+export default AdminUsers;

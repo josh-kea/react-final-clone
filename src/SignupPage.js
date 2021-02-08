@@ -8,7 +8,6 @@ class SignupPage extends React.Component {
         password: "",
         firstName: "",
         lastName: "",
-        phone:"",
         message:""
     };
 
@@ -140,7 +139,7 @@ class SignupPage extends React.Component {
                 <div className="modal-form-wrapper">
                     <div className="modal-form-header">
                         <p>Sign Up</p>
-                        <Link to="/" className="sign-in-btn">Already have an account? Sign in.</Link>
+                        <Link to="/login" className="sign-in-btn">Already have an account? Sign in.</Link>
                     </div>
                     <form className="modal-form" onSubmit={this.handleFormCreateUser} id="SignUpForm">
                         <div className="form-row">

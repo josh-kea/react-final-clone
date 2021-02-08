@@ -1,19 +1,19 @@
-const cors = require('cors');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer')
-const express = require('express')
-require('dotenv').config()
+require("dotenv").config();
+const cors = require("cors");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const nodemailer = require("nodemailer");
+const express = require("express");
 
-const app = express()
-const jwt = require('jsonwebtoken')
-const { restart } = require('nodemon')
+const app = express();
+const jwt = require("jsonwebtoken");
+const { restart } = require("nodemon");
 
-const mongoose = require('mongoose');
-const User = require('./models/UserModel'); // Register user model
+const mongoose = require("mongoose");
+const User = require("./models/UserModel"); // Register user model
 
 // Bcrypt for password hashing and dehashing
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 // Rate limiting
 const rateLimiter = require("express-rate-limit");
 
@@ -24,18 +24,19 @@ const rateLimiter = require("express-rate-limit");
 
 // db mongoose connection to MongoDB
 
-mongoose.connect(process.env.DATABASE, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false
-})
-.then(() => console.log('DB Connected'))
-.catch(err => console.log(err));
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then(() => console.log("DB Connected"))
+  .catch((err) => console.log(err));
 
 // middlewares - implement cors
-app.use(express.json())
-app.use(morgan('dev'));
+app.use(express.json());
+app.use(morgan("dev"));
 app.use(cors());
 
 // Creating user with bcrypt hashed password
@@ -59,7 +60,7 @@ const sendVerificationMail = (email, uniqueString) => {
   //   port: '465',
   //   secure: true, // true for 465, false for other ports
   //   auth: {
-  //     user: "joshua@ptd-cph.com", 
+  //     user: "joshua@ptd-cph.com",
   //     pass: process.env.ZOHO_PASSWORD, // zoho protected password
   //   },
   // });
@@ -73,11 +74,11 @@ const sendVerificationMail = (email, uniqueString) => {
   // });
 
   const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.sendinblue.com',
-    port: '587',
+    host: "smtp-relay.sendinblue.com",
+    port: "587",
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "joshkap2015@gmail.com", 
+      user: "joshkap2015@gmail.com",
       pass: process.env.SENDINBLUE_PASSWORD, // zoho protected password
     },
   });
@@ -87,84 +88,84 @@ const sendVerificationMail = (email, uniqueString) => {
     // to: email,
     to: "joshkap2015@gmail.com", // for testing purposes
     subject: "[React Josh] Confirm Your Email Address",
-    html: `Press <a href="http://localhost:3000/verify/${uniqueString}"> here </a> to verify your email address. Thanks!`
-  }
+    html: `Press <a href="http://localhost:3000/verify/${uniqueString}"> here </a> to verify your email address. Thanks!`,
+  };
 
   transporter.sendMail(mailOptions, (err, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log("Verification email send successfully.")
+      console.log("Verification email send successfully.");
     }
-  })
-}
+  });
+};
 
 // GET /verify/:verifyString
-app.get('/verifyEmail/:verifyString', async (req, res) =>{
-  const { verifyString } = req.params
+app.get("/verifyEmail/:verifyString", async (req, res) => {
+  const { verifyString } = req.params;
 
   const user = await User.findOne({ verifyString: verifyString });
 
   if (user == null) {
-    console.log('user not found')
-    return res.status(400).send('Cannot find user')
-
+    console.log("user not found");
+    return res.status(400).send("Cannot find user");
   } else if (user) {
-    user.isValid = true
-    await user.save()
-    res.status(200).json()
+    user.isValid = true;
+    await user.save();
+    res.status(200).json();
   }
-})
+});
 
 // POST /users  -- Registering a user
-app.post('/users', async (req, res) => {
+app.post("/users", async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
 
-    const { firstName, lastName, email, password} = req.body;
+  const existingUser = await User.findOne({ email: email });
 
-      const existingUser = await User.findOne({ email: email });
+  if (!existingUser) {
+    const user = await new User({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+    });
 
-      if (!existingUser) {
-        const user = await new User({ firstName:firstName, lastName:lastName, email: email });
+    await user.setPassword(password); // hash & salt generator with crypto
+    // console.log(user.email)
 
-        await user.setPassword(password) // hash & salt generator with crypto
-        // console.log(user.email)
-  
-      //  console.log(user.hash + user.salt)
-  
-        await user.generateEmailVerificationString(email)
-  
-        await user.save()
-  
-        token = user.generateJWT()
-  
-        sendVerificationMail(email, user.verifyString)
-        
-        res.status(200).json({
-          "authToken": token,
-          message: 'User created successfully!',
-        });
-      } else {
-        res.status(409).json({
-          message: 'User already exists!',
-        });
-      }
+    //  console.log(user.hash + user.salt)
 
+    await user.generateEmailVerificationString(email);
 
+    await user.save();
 
-})
+    token = user.generateJWT();
+
+    sendVerificationMail(email, user.verifyString);
+
+    res.status(200).json({
+      authToken: token,
+      message: "User created successfully!",
+    });
+  } else {
+    res.status(409).json({
+      message: "User already exists!",
+    });
+  }
+});
 
 // POST /users/login -- Checks for existing user
 app.post('/users/login', async (req, res) => {
 
-  const {email, password } = req.body;
+  const { email, password } = req.body;
 
   const user = await User.findOne({ email: email });
 
-  if (user == null) {
-      console.log('user not found')
-      return res.status(400).send('Cannot find user')
-      
-      //return res.send('User not found!')
+  console.log(user)
+
+  if (user === null) {
+      return res.status(400).json({
+        message: 'User not found.',
+      });
   }
 
   if (await user.validPassword(password)) {
@@ -180,62 +181,61 @@ app.post('/users/login', async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin
     });
-   
-    const authorizedUser = jwt.verify(token, process.env.JWT_SECRET);
+
+    // const authorizedUser = jwt.verify(token, process.env.JWT_SECRET);
     // console.log(req.cookies)
-    
-  } else {
+
+  } else if (await !user.validPassword(password)) {
         res.status(400).json({
-        error: 'Password incorrect!'
+        message: 'Password or email is incorrect!'
     })
   }
 })
 
-  // GET /users  -- Listing users
-  app.get('/users', async (req, res) => {
+// GET /users  -- Listing users
+app.get("/users", async (req, res) => {
+  // let users = await User.find({})
+  // console.log(users)
 
-    // let users = await User.find({})
-    // console.log(users)
-  
-    User.find({}, await function(err, users) {
-      if (err) { 
-          console.log(err) 
+  User.find(
+    {},
+    await function (err, users) {
+      if (err) {
+        console.log(err);
       }
-      res.status(200).json(users)
-    }).sort({ createdAt: -1})
-  
+      res.status(200).json(users);
+    }
+  ).sort({ createdAt: -1 });
+});
 
-    
-  })
+// GET /users  -- Listing users
+app.get("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  // let users = await User.find({})
+  // console.log(users)
 
-  // GET /users  -- Listing users
-  app.get('/users/:id', async (req, res) => {
-    const { id } = req.params
-    // let users = await User.find({})
-    // console.log(users)
-  
-    User.findOne({ _id: id}, await function(err, user) {
-      if (err) { 
-          console.log(err) 
+  User.findOne(
+    { _id: id },
+    await function (err, user) {
+      if (err) {
+        console.log(err);
       }
-      res.status(200).json(user)
-    })
-  
-
-    
-  })
+      res.status(200).json(user);
+    }
+  );
+});
 
 // POST/ admin
-app.post('/admin', async (req, res) =>{
-  const { email } = req.body
+app.post("/admin", async (req, res) => {
+  const { email } = req.body;
 
   const user = await User.findOne({ email: email });
 
   if (user == null) {
-    return res.status(400).send('Cannot find user!')
-
+    return res.status(400).send("Cannot find user!");
   } else if (user) {
     res.status(200).json(user);
-}})
+  }
+});
 
-app.listen(4000)
+app.listen(4000);

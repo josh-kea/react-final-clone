@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Login from './Login';
+import HomePage from './HomePage';
+import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
 import Verify from './Verify';
-import AdminHome from './AdminHome';
-import AdminProducts from './AdminProducts';
-import AdminUsers from './AdminUsers';
-import AdminSingleUser from './AdminSingleUser';
-import AdminRoute from './AdminRoute';
+import AdminHome from './AdminPages/AdminHome';
+import AdminProducts from './AdminPages/AdminProducts';
+import AdminUsers from './AdminPages/AdminUsers';
+import AdminSingleUser from './AdminPages/AdminSingleUser';
+import AdminRoute from './AdminPages/AdminRoute';
 import './App.css';
 
 
@@ -15,7 +16,8 @@ const Routes = () => {
     return(
         <BrowserRouter>
             <Switch>
-                <Route path="/" exact component={Login} />
+                <Route path="/" exact component={HomePage} />
+                <Route path="/login" exact component={LoginPage} />
                 <Route path="/signup" exact component={SignupPage} />
                 <Route path="/verify/:verifyString" exact component={Verify} />
 
@@ -24,11 +26,6 @@ const Routes = () => {
                 <AdminRoute path="/admin/users" exact component={AdminUsers} />
                 <AdminRoute path="/admin/users/:id" exact component={AdminSingleUser} />
 
-                {/* <PrivateRoute path="/create" exact component={Create} />
-                <Route path="/post/:slug" exact component={SinglePost} />
-                <Route path="/post/update/:slug" exact component={UpdatePost} />
-                <PrivateRoute path="/post/update/:slug" exact component={UpdatePost} />
-                <Route path="/login" exact component={Login} /> */}
             </Switch>
         </BrowserRouter>
     );
