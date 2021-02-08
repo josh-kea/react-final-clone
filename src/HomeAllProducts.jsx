@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
+import ViewProductButton from './ViewProductButton'
 import './HomeAllProducts.css'
 
 const HomeAllProducts = (props) => {
@@ -93,12 +94,13 @@ const HomeAllProducts = (props) => {
             {
                 products.map((product, i) => {
                     return (
-                        <div className="product-grid-item">
+                        <div className="product-grid-item" key={i}>
                             <img src="https://ae01.alicdn.com/kf/Hecc63e829b5a498fb16257485d35293cP/U-Shape-Trigger-Point-Massage-Roller-for-Arm-Leg-Neck-Muscle-Tissue-for-Fitness-Gym-Yoga.jpg_50x50.jpg_.webp"></img>
                             <div className="product-grid-details">
                                 <p className="product-grid-title">{product.title}</p>
                                 <p className="product-grid-profit">Potential Profit: ${product.profit_margin.toFixed(2)}</p>
                             </div>
+                            <ViewProductButton slug={product.slug}></ViewProductButton>
                         </div>
                     )
                 })
