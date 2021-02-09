@@ -15,8 +15,8 @@ const AdminSingleProduct = (props) => {
         <AdminLeftPanel activePanel={"Products"}></AdminLeftPanel>
 
         <div id="AdminRightPanel">
-          {/* <SingleProduct></SingleProduct> */}
-          <AddProduct></AddProduct>
+          <SingleProduct></SingleProduct>
+          {/* <AddProduct></AddProduct> */}
         </div>
 
       </div>
