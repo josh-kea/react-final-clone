@@ -20,7 +20,6 @@ const AddProductModal = () => {
         })
 
         handleImageUpload(e.target.files[0])
-
     }
 
     // Using Layout Effect to avoid rendering the UseEffect at first load of webpage
@@ -43,8 +42,7 @@ const AddProductModal = () => {
     //     }, [state.selectedFile])  // pass `selectedFile` as a dependency
 
 
-
-    const handleImageUpload = (file) => {
+    const handleImageUpload = async (file) => {
         const formData = new FormData();
         formData.append('file', file);
         // replace this with your upload preset name
@@ -56,22 +54,27 @@ const AddProductModal = () => {
         };
 
         // replace cloudname with your Cloudinary cloud_name
-        return fetch('https://api.Cloudinary.com/v1_1/drbgecrkt/image/upload', options)
+        return await fetch('https://api.Cloudinary.com/v1_1/drbgecrkt/image/upload', options)
         .then(res => res.json())
         .then(res => {
-            console.log(res)
 
-            if (res.secure_url){
+            if(res.secure_url){
                 setState({
-                    secureCloudnaryUrl: res.secure_url
-                })
+                    secureCloudinaryUrl: res.secure_url
+                })  
+            } else {
+                setState({
+                    secureCloudinaryUrl: ''
+                })  
             }
+         
         })
         .catch(err => console.log(err));
     }
 
+
     const handleFormCreateProduct = (event) => {
-            const { title, content, product_cost, selling_price, aliexpress_link, secureCloudinaryUrl } = state
+            const { title, secureCloudinaryUrl, content, product_cost, selling_price, aliexpress_link } = state
 
             // /POST IF STATES ARE VALID
             
@@ -82,11 +85,11 @@ const AddProductModal = () => {
                 },
                 body: JSON.stringify({
                     title: title,
+                    productImg: secureCloudinaryUrl,
                     content: content,
                     product_cost: product_cost,
                     selling_price: selling_price,
                     aliexpress_link: aliexpress_link,
-                    productImg: secureCloudinaryUrl
                 })
             })
             .then(response => {
@@ -124,7 +127,7 @@ const AddProductModal = () => {
                         <div className="product-image-container">
                             {state.secureCloudinaryUrl === '' ?
                             (<PlaceholderProductImg></PlaceholderProductImg>) : 
-                            (<img src={state.secureCloudnaryUrl}></img>)}
+                            (<img src={state.secureCloudinaryUrl}></img>)}
                             
                             
                         </div>

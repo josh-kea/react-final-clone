@@ -94,3 +94,9 @@
     border:0.1rem solid #DFE3E8;
     border-radius:5px;
 }
+
+.row-image {
+    height:100px;
+    width:100px;
+    display:block;
+}

@@ -101,7 +101,7 @@ const AllProducts = (props) => {
                     console.log(product._id)
                     return (
                         <Link to={`/admin/products/${product._id}`} className="user-row" key={product._id}>
-                            <div className="user-row-email">{product.title}</div>
+                            <div className="user-row-email"><img className="row-image" src={product.productImg} alt=""/></div>
                             <div className="user-row-email">{product.title}</div>
                            {createdAt(product)}
                         </Link>

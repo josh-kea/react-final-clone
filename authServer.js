@@ -258,7 +258,7 @@ app.get("/products", async (req, res) => {
 
 app.post("/products/add", async (req, res) => {
   console.log(req.body) 
-  const { title, content, product_cost, selling_price, aliexpress_link } = await req.body
+  const { title, content, product_cost, selling_price, aliexpress_link, productImg } = await req.body
   
   const slug =  slugify(title)// My Post my-post
 
@@ -292,7 +292,7 @@ app.post("/products/add", async (req, res) => {
   const profit_margin = selling_price - product_cost;
   
   
-  Product.create({ title, content, product_cost, selling_price, profit_margin, aliexpress_link, slug }, (err, product) => {
+  Product.create({ title, productImg , content, product_cost, selling_price, profit_margin, aliexpress_link, slug }, (err, product) => {
       if(err){
           console.log(err)
           res.status(400).json({ error: 'Duplicate post. Try another title.'})
