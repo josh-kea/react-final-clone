@@ -283,7 +283,7 @@ app.get("/products", async (req, res) => {
 
 // GET PRODUCTS -- Listing products
 
-app.post("/products/add", async (req, res) => {
+app.post("/products/add", upload.single('productImg'), async (req, res) => {
   // const url = req.protocol + '://' + req.get('host')
 
   
