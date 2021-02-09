@@ -1,0 +1,13 @@
+.product-image-container{
+    width:30%;
+    margin:0 auto;
+}
+
+.product-image-input-row {
+    margin:0 auto;
+}
+
+.product-image-input-row input{
+    margin:0 auto;
+    display:block;
+}
