@@ -239,7 +239,7 @@ app.post("/admin", async (req, res) => {
   }
 });
 
-// GET PRODUCTS -- Listing products
+// GET ALL PRODUCTS -- Listing products
 
 app.get("/products", async (req, res) => {
 
@@ -254,7 +254,23 @@ app.get("/products", async (req, res) => {
   ).sort({ createdAt: -1 });
 });
 
-// GET PRODUCTS -- Listing products
+// GET SINGLE PRODUCT BY ID -- Show product
+
+app.get("/products/:id", async (req, res) => {
+  const { id } = req.params;
+
+  Product.findOne(
+    { _id: id },
+    await function (err, product) {
+      if (err) {
+        console.log(err);
+      }
+      res.status(200).json(product);
+    }
+  );
+});
+
+// POST PRODUCT -- Creating a new product
 
 app.post("/products/add", async (req, res) => {
   console.log(req.body) 

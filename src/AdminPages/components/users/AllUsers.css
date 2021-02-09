@@ -19,7 +19,7 @@
     border-bottom:0.1rem solid #DFE3E8;
     padding:10px 20px;
     display:grid;
-    grid-template-columns:1fr 0.5fr 0.5fr;
+    grid-template-columns:1fr 1fr 0.5fr 0.5fr;
     font-size:14px;
 }
 

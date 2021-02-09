@@ -129,7 +129,6 @@ const AddProductModal = () => {
                             (<PlaceholderProductImg></PlaceholderProductImg>) : 
                             (<img src={state.secureCloudinaryUrl}></img>)}
                             
-                            
                         </div>
                         <div className="product-image-input-row"><input type="file" onChange={fileSelectedHandler} /></div>
 
@@ -140,7 +139,7 @@ const AddProductModal = () => {
                             <p>Product Title</p>
                             <input type="text" value={state.title} onChange={handleChange('title')} required/>
                         </div >
-                        </div>
+                    </div>
                         <div className="form-row">
                         <div className="row-wrapper">
                             <p>Description</p>
