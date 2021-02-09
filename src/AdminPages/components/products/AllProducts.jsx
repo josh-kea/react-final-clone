@@ -4,42 +4,112 @@ import './AllProducts.css'
 
 const AllProducts = (props) => {
     const [products, setProducts] = useState([]);
+    const [sortMethod, setSortMethod] = useState("desc");
+
+    function fetchProducts(){
+        fetch(`http://localhost:4000/products`, {
+            method:'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            return response.json()
+        }).then(data => {
+            // Sort products before displaying them
+            setProducts(data)
+            //const sortedProducts = sortProducts(data, sortByQuery);
+            //setProducts(...products, sortedProducts);
+          // JSON.parse(sessionStorage.getItem('token'))
+          
+        })
+        .catch(error => console.log(error))
+    }
+    function sortProducts(sortMethod) {
+        let sortedProducts;
+
+        switch(sortMethod){
+            case "asc":
+                sortedProducts = products.sort((a,b) => 
+                    {
+                        a.date = new Date(a.createdAt);
+                        b.date = new Date(b.createdAt);
+                        return b.date - a.date;
+                    }
+                )
+                setProducts(sortedProducts)
+                break;
+            case "desc":
+                sortedProducts = products.sort((a,b) => 
+                    {
+                        a.date = new Date(a.createdAt);
+                        b.date = new Date(b.createdAt);
+                        return a.date - b.date;
+                    }
+                )
+                setProducts(sortedProducts)
+                break;
+            default:
+                return products;
+        }
+    }
+
+    // Below useEffect runs once when the component mounts.
+    useEffect(() => {
+        console.log("UseEffect Mounted")
+        fetchProducts();        
+    }, [])
+
+    // Below useEffect runs once when the component updates.
+    useEffect(() => {
+        console.log("UseEffect Update")        
+        
+    });
+
+    function handleSortMethodChange(event) {
+        // Setting the sort method state
+        setSortMethod(event.target.value);
+
+        sortProducts(sortMethod);
+    }
+
+    const createdAt = (user) => {
+        const createdAtDate = new Date(user.createdAt)
+        let dateString = createdAtDate.toString()
+        dateString = dateString.split(' ').slice(0, 5).join(' ');
+
+        return (
+            <div className="user-row-date-created"><p>{dateString}</p></div>
+        )
+    }
 
     return(
     <div id="AllProducts">
-
-            <div className="left-panel-list">
-
-                {/* When activePanel is Home */}
-
-                {props.activePanel == "Home" ? (
-                        <Link to="/admin" className="active-panel">Home</Link>
-                    ) : (
-                        <Link to="/admin">Home</Link>
-                    )
-                }
-
-                {/* When activePanel is Products */}
-
-
-                {props.activePanel == "Products" ? (
-                       <Link to="/admin/products" className="active-panel">Products</Link>
-                    ) : (
-                        <Link to="/admin/products">Products</Link>
-                    )
-                }
-
-                {/* When activePanel is Users */}
-
-                {props.activePanel == "Users" ? (
-                       <Link to="/admin/users" className="active-panel">Users</Link>
-                    ) : (
-                        <Link to="/admin/users">Users</Link>
-                    )
-                }
-
-
+        <h1>Products</h1>
+        <div className="user-rows">
+            <div className="total-users-row">
+                <div>{products.length} Total products</div>
+                <div><span>Sort By </span>
+                    <select className="sort" value={sortMethod} name="sortBy" onChange={(e) => handleSortMethodChange(e)}>
+                        <option value="desc">Newest First</option>
+                        <option value="asc">Oldest First</option>
+                    </select>
+                </div>
             </div>
+            {
+                products.map((product, i) => {
+                    console.log(product._id)
+                    return (
+                        <Link to={`/admin/products/${product._id}`} className="user-row" key={product._id}>
+                            <div className="user-row-email">{product.title}</div>
+                            <div className="user-row-email">{product.title}</div>
+                           {createdAt(product)}
+                        </Link>
+                    )
+                })
+            }
+        </div>
+
 
 
     </div>

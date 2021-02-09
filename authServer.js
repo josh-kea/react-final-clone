@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const nodemailer = require("nodemailer");
 const slugify = require('slugify');
 const express = require("express");
+const multer = require('multer')
 
 
 const app = express();
@@ -40,6 +41,31 @@ mongoose
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
+
+const DIR = './public/';
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+      const fileName = file.originalname.toLowerCase().split(' ').join('-');
+      cb(null, uuidv4() + '-' + fileName)
+  }
+});
+
+let upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+      if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+          cb(null, true);
+      } else {
+          cb(null, false);
+          return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      }
+  }
+});
 
 // Creating user with bcrypt hashed password
 // POST /USERS  -- Creating a user
@@ -258,6 +284,12 @@ app.get("/products", async (req, res) => {
 // GET PRODUCTS -- Listing products
 
 app.post("/products/add", async (req, res) => {
+  // const url = req.protocol + '://' + req.get('host')
+
+  
+  // if(req.file.filename) {
+  //   const productImg = url + '/public/' + req.file.filename
+  // }
 
   const { title, content, product_cost, selling_price, aliexpress_link } = req.body
   const slug = slugify(title)// My Post my-post

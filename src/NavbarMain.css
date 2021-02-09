@@ -15,6 +15,7 @@
     border: 0.1rem solid silver;
     padding:10px 20px;
     margin-right:10px;
+    cursor:pointer;
 }
 
 .signup-btn {

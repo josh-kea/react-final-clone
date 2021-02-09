@@ -12,12 +12,12 @@ const AdminLeftPanel = (props) => {
 
                 {/* When activePanel is Home */}
 
-                {props.activePanel === "Home" ? (
+                {/* {props.activePanel === "Home" ? (
                         <Link to="/admin" className="active-panel">Home</Link>
                     ) : (
                         <Link to="/admin">Home</Link>
                     )
-                }
+                } */}
 
                 {/* When activePanel is Products */}
 

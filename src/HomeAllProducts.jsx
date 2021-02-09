@@ -77,7 +77,6 @@ const HomeAllProducts = (props) => {
 
     return(
     <div id="HomeAllProducts">
-        <h1>Products</h1>
         <div className="user-rows">
             <div className="total-users-row">
                 <div>{products.length} Total Products</div>

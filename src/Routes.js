@@ -6,6 +6,7 @@ import SignupPage from './SignupPage';
 import Verify from './Verify';
 import AdminHome from './AdminPages/AdminHome';
 import AdminProducts from './AdminPages/AdminProducts';
+import AdminSingleProduct from './AdminPages/AdminSingleProduct';
 import AdminUsers from './AdminPages/AdminUsers';
 import AdminSingleUser from './AdminPages/AdminSingleUser';
 import AdminRoute from './AdminPages/AdminRoute';
@@ -23,8 +24,11 @@ const Routes = () => {
 
                 <AdminRoute path="/admin" exact component={AdminHome} />
                 <AdminRoute path="/admin/products" exact component={AdminProducts} />
+                <AdminRoute path="/admin/products/add" exact component={AdminSingleProduct} />
+
                 <AdminRoute path="/admin/users" exact component={AdminUsers} />
                 <AdminRoute path="/admin/users/:id" exact component={AdminSingleUser} />
+                
 
             </Switch>
         </BrowserRouter>

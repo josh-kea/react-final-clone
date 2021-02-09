@@ -10,6 +10,7 @@ var ProductSchema = new mongoose.Schema({
         max: 160,
         required: true
     },
+    productImg: String,
     slug: {
         type: String,
         unique: true,
