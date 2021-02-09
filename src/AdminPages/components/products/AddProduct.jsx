@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import './AddProduct.css'
 import { ReactComponent as PlaceholderProductImg } from './PlaceholderProductImg.svg';
@@ -6,35 +6,47 @@ import { ReactComponent as PlaceholderProductImg } from './PlaceholderProductImg
 const AddProductModal = () => {
     const [state, setState] = useState({
         selectedFile: null,
-        secureCloudinaryUrl: ''
-    });
-
-    const [modalContent, setModalContent] = useState({
+        secureCloudinaryUrl: '',
         title: '',
         content:'',
         product_cost:'',
         selling_price:'',
         aliexpress_link: ''
-    })
-
-    const toggleModal = () => {
-        console.log("hello")
-    }
+    });
 
      const fileSelectedHandler = (e) => {
         setState({
             selectedFile: e.target.files[0]
-        }, () => {
-            handleImageUpload();
-        });
-        
-        
-        
+        })
+
+        handleImageUpload(e.target.files[0])
+
     }
 
-    const handleImageUpload = () => {
+    // Using Layout Effect to avoid rendering the UseEffect at first load of webpage
+    // const firstUpdate = useRef(true);
+    // useLayoutEffect(() => {
+    //     if (firstUpdate.current) {
+    //       firstUpdate.current = false;
+    //     } else {
+    //         handleImageUpload()
+    //     }
+    //   }, [state.selectedFile]);
+
+    //   useEffect(() => {
+    //     // This effect uses the `selectedFile` variable,
+    //     // so it "depends on" `selectedFile`.
+    //         if (firstUpdate.current) {
+    //             handleImageUpload();
+    //             console.log(state.secureCloudnaryUrl)
+    //         }
+    //     }, [state.selectedFile])  // pass `selectedFile` as a dependency
+
+
+
+    const handleImageUpload = (file) => {
         const formData = new FormData();
-        formData.append('file', state.selectedFile);
+        formData.append('file', file);
         // replace this with your upload preset name
         formData.append('upload_preset', 'q49a7qsp');
 
@@ -58,9 +70,9 @@ const AddProductModal = () => {
         .catch(err => console.log(err));
     }
 
-    const handleFormCreateProduct = async (event) => {
-        // const { firstName, lastName, email, password } = this.state
-        event.preventDefault();
+    const handleFormCreateProduct = (event) => {
+            const { title, content, product_cost, selling_price, aliexpress_link, secureCloudinaryUrl } = state
+
             // /POST IF STATES ARE VALID
             
             fetch(`http://localhost:4000/products/add`, {
@@ -69,19 +81,15 @@ const AddProductModal = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    title: modalContent.title,
-                    content: modalContent.content,
-                    product_cost: modalContent.product_cost,
-                    aliexpress_link: modalContent.aliexpress_link,
-                    productImg: state.secureCloudinaryUrl
+                    title: title,
+                    content: content,
+                    product_cost: product_cost,
+                    selling_price: selling_price,
+                    aliexpress_link: aliexpress_link,
+                    productImg: secureCloudinaryUrl
                 })
             })
             .then(response => {
-                if(response.ok) {
-                    alert('Product created successfully')
-                } else {
-                    // alert('User already exists')
-                }
                 return response.json()
             })
             .then(data => {
@@ -96,13 +104,13 @@ const AddProductModal = () => {
             })
             .catch(error => console.log('ERROR'))
     
-
+            event.preventDefault();
         
     }
 
     function handleChange(name) {
         return function(event) {
-            setModalContent({ [name]: event.target.value })
+            setState({ ...state, [name]: event.target.value })
         };
       };
 
@@ -112,9 +120,14 @@ const AddProductModal = () => {
             <div className="modal-form-wrapper">
                 <div className="modal-form-header">
                     <p>Create Product</p>
-                    {/* <svg viewBox="0 0 20 20" class="Polaris-Icon__Svg_375hu" focusable="false" aria-hidden="true" onClick={() => setModalState(false)}><path d="M11.414 10l6.293-6.293a1 1 0 1 0-1.414-1.414L10 8.586 3.707 2.293a1 1 0 0 0-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 1 0 1.414 1.414L10 11.414l6.293 6.293A.998.998 0 0 0 18 17a.999.999 0 0 0-.293-.707L11.414 10z"></path></svg> */}
-                </div>
-                        <div className="product-image-container"><PlaceholderProductImg></PlaceholderProductImg></div>
+                     </div>
+                        <div className="product-image-container">
+                            {state.secureCloudinaryUrl === '' ?
+                            (<PlaceholderProductImg></PlaceholderProductImg>) : 
+                            (<img src={state.secureCloudnaryUrl}></img>)}
+                            
+                            
+                        </div>
                         <div className="product-image-input-row"><input type="file" onChange={fileSelectedHandler} /></div>
 
                 <form className="modal-form" onSubmit={handleFormCreateProduct}>
@@ -122,36 +135,36 @@ const AddProductModal = () => {
                     <div className="form-row">
                         <div className="row-wrapper">
                             <p>Product Title</p>
-                            <input type="text" value={modalContent.title} onChange={handleChange('title')}/>
+                            <input type="text" value={state.title} onChange={handleChange('title')} required/>
                         </div >
                         </div>
                         <div className="form-row">
                         <div className="row-wrapper">
                             <p>Description</p>
-                            <input type="text" value={modalContent.content} onChange={handleChange('content')}/>
+                            <input type="text" value={state.content} onChange={handleChange('content')} required/>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="row-wrapper">
                             <p>Cost Price</p>
-                            <input type="text" value={modalContent.cost_price} onChange={handleChange('cost_price')}/>
+                            <input type="text" value={state.product_cost} onChange={handleChange('product_cost')} required/>
                         </div>
 
                         <div className="row-wrapper">
                             <p>Selling Price</p>
-                            <input type="text" value={modalContent.selling_price} onChange={handleChange('selling_price')}/>
+                            <input type="text" value={state.selling_price} onChange={handleChange('selling_price')} required/>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="row-wrapper">
                             <p>Alexpress Link</p>
-                            <input type="text" value={modalContent.aliexpress_link} onChange={handleChange('aliexpress_link')}/>
+                            <input type="text" value={state.aliexpress_link} onChange={handleChange('aliexpress_link')} required/>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="row-wrapper  row-end">
-                            <div className="form-btn" onClick={() => toggleModal(false)}>Cancel</div>
-                            <div className="form-btn">Save</div>
+                            <div className="form-btn">Cancel</div>
+                            <button className="form-btn">Create</button>
                         </div>
                     </div>
                 </form>

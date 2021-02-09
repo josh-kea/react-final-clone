@@ -257,9 +257,10 @@ app.get("/products", async (req, res) => {
 // GET PRODUCTS -- Listing products
 
 app.post("/products/add", async (req, res) => {
-
-  const { title, content, product_cost, selling_price, aliexpress_link } = req.body
-  const slug = slugify(title)// My Post my-post
+  console.log(req.body) 
+  const { title, content, product_cost, selling_price, aliexpress_link } = await req.body
+  
+  const slug =  slugify(title)// My Post my-post
 
   switch(true) {
       case !title:
@@ -270,6 +271,22 @@ app.post("/products/add", async (req, res) => {
           return res.status(400).json({
               error: 'Content is required'
           })
+      case !product_cost:
+        return res.status(400).json({
+            error: 'Product cost is required'
+        })
+      case !selling_price:
+          return res.status(400).json({
+              error: 'Selling price is required'
+          })
+      case !aliexpress_link:
+        return res.status(400).json({
+            error: 'Aliexpress link is required'
+        })
+      case !slug:
+        return res.status(400).json({
+          error: 'Generating slug error'
+        })
   }
 
   const profit_margin = selling_price - product_cost;

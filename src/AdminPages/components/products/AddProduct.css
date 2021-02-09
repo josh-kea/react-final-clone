@@ -1,6 +1,6 @@
 .product-image-container{
     width:30%;
-    margin:0 auto;
+    margin:20px auto;
 }
 
 .product-image-input-row {
@@ -9,5 +9,10 @@
 
 .product-image-input-row input{
     margin:0 auto;
+    display:block;
+}
+
+.product-image-container img {
+    width:100%;
     display:block;
 }
