@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import './AllProducts.css'
+import { ReactComponent as PlaceholderProductImg } from './PlaceholderProductImg.svg';
 
 import AddProductModal from './AddProductModal'
 
