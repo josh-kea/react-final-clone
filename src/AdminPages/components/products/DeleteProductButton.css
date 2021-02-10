@@ -1,0 +1,13 @@
+#DeleteProductButton {
+    border-radius:10px;
+    background-color:#F73738;
+    padding:10px 20px;
+    margin:0 auto auto auto;
+    color:white;
+    border:0.1rem solid #DFE3E8;
+}
+
+#DeleteProductButton:hover {
+    cursor:pointer;
+    background-color:rgba(247, 55, 56, 0.9)
+}

@@ -25,7 +25,7 @@ const DeleteProductButton = (props) => {
     }
 
     return (
-        <div onClick={handleDeleteProduct}>Delete</div>
+        <div id="DeleteProductButton" onClick={handleDeleteProduct}>Delete</div>
     )
 }
 

@@ -244,6 +244,8 @@ app.get("/products/:id", async (req, res) => {
   );
 });
 
+
+
 // POST PRODUCT -- Creating a new product
 
 app.post("/products/add", async (req, res) => {
