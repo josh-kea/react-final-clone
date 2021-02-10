@@ -25,7 +25,6 @@ const Routes = () => {
                 <AdminRoute path="/admin" exact component={AdminHome} />
                 <AdminRoute path="/admin/products" exact component={AdminProducts} />
                 <AdminRoute path="/admin/products/:id" exact component={AdminSingleProduct} />
-                {/* <AdminRoute path="/admin/products/add" exact component={AdminSingleProduct} /> */}
 
                 <AdminRoute path="/admin/users" exact component={AdminUsers} />
                 <AdminRoute path="/admin/users/:id" exact component={AdminSingleUser} />

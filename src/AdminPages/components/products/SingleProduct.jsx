@@ -38,18 +38,6 @@ const SingleProduct = (props) => {
     fetchUser();
   }, []);
 
-  function showEditUserModal() {}
-
-  // function handleChange(name) {
-  //     return function(event) {
-  //         setModalContent({ ...user, [name]: event.target.value })
-  //     };
-  //   };
-
-  // const handleUserEditClick = () => {
-  //     showEditUserModal();
-  // }
-
   return (
     <div id="SingleUser">
       <div className="single-user-header">

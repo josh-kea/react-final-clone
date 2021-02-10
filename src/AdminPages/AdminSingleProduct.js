@@ -3,7 +3,6 @@ import AdminNav from "./components/AdminNav";
 import AdminLeftPanel from "./components/AdminLeftPanel";
 
 import SingleProduct from "./components/products/SingleProduct";
-import AddProduct from "./components/products/AddProduct";
 
 const AdminSingleProduct = (props) => {
 
@@ -16,7 +15,6 @@ const AdminSingleProduct = (props) => {
 
         <div id="AdminRightPanel">
           <SingleProduct></SingleProduct>
-          {/* <AddProduct></AddProduct> */}
         </div>
 
       </div>

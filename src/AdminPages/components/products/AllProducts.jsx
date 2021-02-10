@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import './AllProducts.css'
 
+import AddProductModal from './AddProductModal'
+
 const AllProducts = (props) => {
     const [products, setProducts] = useState([]);
     const [sortMethod, setSortMethod] = useState("desc");
@@ -61,12 +63,6 @@ const AllProducts = (props) => {
         fetchProducts();        
     }, [])
 
-    // Below useEffect runs once when the component updates.
-    useEffect(() => {
-        console.log("UseEffect Update")        
-        
-    });
-
     function handleSortMethodChange(event) {
         // Setting the sort method state
         setSortMethod(event.target.value);
@@ -84,15 +80,17 @@ const AllProducts = (props) => {
         )
     }
 
-    function toggleModal(bool) {
+    function toggleCreateProductModal(bool) {
         setModalState(bool);
+        console.log(isModalActive)
     }
 
     return(
     <div id="AllProducts">
         <div className="admin-right-header">
         <h1>Products</h1>
-        <div className="admin-right-header-btn" onClick={()=>toggleCreateProductModal(false)}>Create New Product</div>
+        <div className="admin-right-header-btn" onClick={()=>toggleCreateProductModal(true)}>Create New Product</div>
+            {isModalActive && <AddProductModal></AddProductModal>}
         </div>
         <div className="user-rows">
             <div className="total-users-row">
@@ -106,7 +104,6 @@ const AllProducts = (props) => {
             </div>
             {
                 products.map((product, i) => {
-                    console.log(product._id)
                     return (
                         <Link to={`/admin/products/${product._id}`} className="user-row" key={product._id}>
                             <div className="user-row-email"><img className="row-image" src={product.productImg} alt=""/></div>
