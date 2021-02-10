@@ -244,7 +244,24 @@ app.get("/products/:id", async (req, res) => {
   );
 });
 
+// DELETE SINGLE PRODUCT BY ID -- Delete product
 
+app.delete("/products/:id", async (req, res) => {
+  const { id } = req.params;
+
+  Product.findOneAndDelete(
+    { _id: id },
+    await function (err, product) {
+      if (err) {
+        console.log(err);
+      }
+      res.status(200).json({
+        product,
+        message: "Product deleted successfully."
+      });
+    }
+  );
+});
 
 // POST PRODUCT -- Creating a new product
 
