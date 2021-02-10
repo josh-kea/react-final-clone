@@ -100,3 +100,19 @@
     width:100px;
     display:block;
 }
+
+.admin-right-header-btn {
+    border-radius: 10px;
+    border: 0.1rem solid #DFE3E8;
+    display:block;
+    padding:10px 20px;
+    margin: auto 0 auto auto;
+    background-color:#138468;
+    color:white;
+
+}
+
+.admin-right-header-btn:hover { 
+    cursor:pointer;
+    background-color:rgba(19, 132, 104, 0.95);
+}

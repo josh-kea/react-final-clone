@@ -53,7 +53,7 @@ const SingleUser = (props) => {
 
   function handleChange(name) {
     return function (event) {
-      setModalContent({ ...user, [name]: event.target.value });
+      setModalContent({ ...modalContent, [name]: event.target.value });
     };
   }
 
@@ -233,6 +233,9 @@ const SingleUser = (props) => {
         <div className="card card-two-columns timeline-card">
             <div className="card-header">
                 <p className="card-title">Subscription Timeline</p>
+            </div>
+            <div className="card-info">
+                <p>Not subscribed yet.</p>
             </div>
         </div>
 

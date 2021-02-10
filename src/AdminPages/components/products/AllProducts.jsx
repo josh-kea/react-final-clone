@@ -5,6 +5,7 @@ import './AllProducts.css'
 const AllProducts = (props) => {
     const [products, setProducts] = useState([]);
     const [sortMethod, setSortMethod] = useState("desc");
+    const [isModalActive, setModalState] = useState(false);
 
     function fetchProducts(){
         fetch(`http://localhost:4000/products`, {
@@ -83,9 +84,16 @@ const AllProducts = (props) => {
         )
     }
 
+    function toggleModal(bool) {
+        setModalState(bool);
+    }
+
     return(
     <div id="AllProducts">
+        <div className="admin-right-header">
         <h1>Products</h1>
+        <div className="admin-right-header-btn" onClick={()=>toggleCreateProductModal(false)}>Create New Product</div>
+        </div>
         <div className="user-rows">
             <div className="total-users-row">
                 <div>{products.length} Total products</div>
