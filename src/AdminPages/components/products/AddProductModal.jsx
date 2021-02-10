@@ -61,11 +61,11 @@ const AddProductModal = (props) => {
 
             if(res.secure_url){
                 setState({
-                    secureCloudinaryUrl: res.secure_url
+                    ...state, secureCloudinaryUrl: res.secure_url
                 })  
             } else {
                 setState({
-                    secureCloudinaryUrl: ''
+                    ...state, secureCloudinaryUrl: ''
                 })  
             }
          
@@ -140,30 +140,30 @@ const AddProductModal = (props) => {
                     <div className="form-row">
                         <div className="row-wrapper">
                             <p>Product Title</p>
-                            <input type="text" value={state.title} onChange={handleChange('title')} required/>
+                            <input type="text" onChange={handleChange('title')}/>
                         </div >
                     </div>
                         <div className="form-row">
                         <div className="row-wrapper">
                             <p>Description</p>
-                            <input type="text" value={state.content} onChange={handleChange('content')} required/>
+                            <input type="text" onChange={handleChange('content')}/>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="row-wrapper">
                             <p>Cost Price</p>
-                            <input type="text" value={state.product_cost} onChange={handleChange('product_cost')} required/>
+                            <input type="text" onChange={handleChange('product_cost')}/>
                         </div>
 
                         <div className="row-wrapper">
                             <p>Selling Price</p>
-                            <input type="text" value={state.selling_price} onChange={handleChange('selling_price')} required/>
+                            <input type="text" onChange={handleChange('selling_price')} />
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="row-wrapper">
                             <p>Alexpress Link</p>
-                            <input type="text" value={state.aliexpress_link} onChange={handleChange('aliexpress_link')} required/>
+                            <input type="text" onChange={handleChange('aliexpress_link')}/>
                         </div>
                     </div>
                     <div className="form-row">

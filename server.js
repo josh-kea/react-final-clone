@@ -247,7 +247,6 @@ app.get("/products/:id", async (req, res) => {
 // POST PRODUCT -- Creating a new product
 
 app.post("/products/add", async (req, res) => {
-  console.log(req.body) 
   const { title, content, product_cost, selling_price, aliexpress_link, productImg } = await req.body
   const slug =  await slugify(title)// My Post my-post
 
