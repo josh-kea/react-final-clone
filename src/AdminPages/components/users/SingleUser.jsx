@@ -114,7 +114,7 @@ const SingleUser = (props) => {
                 <p>First Name</p>
                 <input
                   type="text"
-                  value={modalContent.firstName}
+                  
                   onChange={handleChange("firstName")}
                 />
               </div>
@@ -122,7 +122,7 @@ const SingleUser = (props) => {
                 <p>Last Name</p>
                 <input
                   type="text"
-                  value={modalContent.lastName}
+                  
                   onChange={handleChange("lastName")}
                 />
               </div>
@@ -132,7 +132,7 @@ const SingleUser = (props) => {
                 <p>Email</p>
                 <input
                   type="text"
-                  value={modalContent.email}
+                  
                   onChange={handleChange("email")}
                 />
               </div>
