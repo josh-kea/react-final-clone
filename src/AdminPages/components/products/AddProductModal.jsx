@@ -14,8 +14,6 @@ const AddProductModal = (props) => {
         aliexpress_link: ''
     });
 
-    console.log(props)
-
      const fileSelectedHandler = (e) => {
         setState({
             selectedFile: e.target.files[0]
@@ -99,13 +97,8 @@ const AddProductModal = (props) => {
             })
             .then(data => {
                 console.log(data)
-                // if (data.authToken) {
-                //     sessionStorage.setItem('token', JSON.stringify(data.authToken))
-                //     this.props.history.push('/')
-                // } else {
-                //     this.setState({ message: data.message})
-                // }
-    
+                props.toggleModal(false)
+                props.fetchProducts()  
             })
             .catch(error => console.log('ERROR'))
     
