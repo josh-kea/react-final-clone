@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom'
 import './AllProducts.css'
 import { ReactComponent as PlaceholderProductImg } from './PlaceholderProductImg.svg';
 
+import DeleteProductButton from './DeleteProductButton'
 import AddProductModal from './AddProductModal'
 
 const AllProducts = (props) => {
@@ -106,11 +107,14 @@ const AllProducts = (props) => {
             {
                 products.map((product, i) => {
                     return (
-                        <Link to={`/admin/products/${product._id}`} className="user-row" key={product._id}>
-                            <div className="user-row-email"><img className="row-image" src={product.productImg} alt=""/></div>
-                            <div className="user-row-email">{product.title}</div>
+                        <div className="product-row" key={product._id}>
+                        <Link to={`/admin/products/${product._id}`} className="product-row-left"  >
+                            <div className="product-row-image-container"><img className="row-image" src={product.productImg} alt=""/></div>
+                            <div className="product-row-title">{product.title}</div>
                            {createdAt(product)}
                         </Link>
+                        <DeleteProductButton productId={product._id}></DeleteProductButton>
+                        </div>
                     )
                 })
             }

@@ -7,7 +7,7 @@
     
 }
 
-.user-rows {
+.product-rows {
     display:grid;
     background-color:white;
     margin-top:20px;
@@ -15,18 +15,23 @@
     border:0.1rem solid #DFE3E8;
 }
 
-.user-row {
+.product-row {
     border-bottom:0.1rem solid #DFE3E8;
     padding:10px 20px;
     display:grid;
-    grid-template-columns:1fr 0.5fr 0.5fr;
+    grid-template-columns:1fr 0.1fr;
     font-size:14px;
 }
 
-.user-row:not(:last-child) {
+.product-row-left {
+    display:grid;
+    grid-template-columns:1fr 1fr 0.5fr;
+}
+
+.product-row:not(:last-child) {
     border-bottom:0.1rem solid #DFE3E8;
 }
-.user-row:hover {
+.product-row:hover {
     background-color:#F6F6F7;
 }
 
@@ -48,7 +53,7 @@
 
 }
 
-.user-badge {
+.product-badge {
     background-color:#DFE3E8;
 }
 
@@ -70,7 +75,7 @@
    
 }
 
-.user-view-button {
+.product-view-button {
     
     background-color:#F6F6F7;
     padding: 4px 8px;
@@ -80,11 +85,11 @@
     
 }
 
-.user-row-email {
+.product-row-email {
     font-weight:600;
 }
 
-.user-row-date-created {
+.product-row-date-created {
     font-size:12px;
 }
 
