@@ -90,7 +90,7 @@ const AllProducts = (props) => {
         <div className="admin-right-header">
         <h1>Products</h1>
         <div className="admin-right-header-btn" onClick={()=>toggleCreateProductModal(true)}>Create New Product</div>
-            {isModalActive && <AddProductModal></AddProductModal>}
+            {isModalActive && <AddProductModal toggleModal={toggleCreateProductModal}></AddProductModal>}
         </div>
         <div className="user-rows">
             <div className="total-users-row">

@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom'
 import './AddProductModal.css'
 import { ReactComponent as PlaceholderProductImg } from './PlaceholderProductImg.svg';
 
-const AddProductModal = () => {
+const AddProductModal = (props) => {
     const [state, setState] = useState({
         selectedFile: null,
         secureCloudinaryUrl: '',
@@ -13,6 +13,8 @@ const AddProductModal = () => {
         selling_price:'',
         aliexpress_link: ''
     });
+
+    console.log(props)
 
      const fileSelectedHandler = (e) => {
         setState({
@@ -165,7 +167,7 @@ const AddProductModal = () => {
                     </div>
                     <div className="form-row">
                         <div className="row-wrapper  row-end">
-                            <div className="form-btn">Cancel</div>
+                            <div className="form-btn" onClick={()=> props.toggleModal(false)}>Cancel</div>
                             <button className="form-btn">Create</button>
                         </div>
                     </div>

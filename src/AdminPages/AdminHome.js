@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from 'react-router-dom';
 import AdminNav from "./components/AdminNav";
 import AdminLeftPanel from "./components/AdminLeftPanel";
 
@@ -12,7 +13,7 @@ const AdminHome = (props) => {
         <AdminLeftPanel activePanel={"Home"}></AdminLeftPanel>
 
         <div id="AdminRightPanel">
-            
+        <Redirect to="/admin/products" />
         </div>
 
       </div>
