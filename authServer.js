@@ -209,7 +209,7 @@ app.get("/users", async (req, res) => {
   ).sort({ createdAt: -1 });
 });
 
-// GET /users  -- Listing users
+// GET /users/id  -- Showing single user
 app.get("/users/:id", async (req, res) => {
   const { id } = req.params;
   // let users = await User.find({})
@@ -217,6 +217,25 @@ app.get("/users/:id", async (req, res) => {
 
   User.findOne(
     { _id: id },
+    await function (err, user) {
+      if (err) {
+        console.log(err);
+      }
+      res.status(200).json(user);
+    }
+  );
+});
+
+// PUT /users/id  -- UPDATING EXISTING USER
+app.put("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const { firstName, lastName, email } = req.body;
+  // let users = await User.find({})
+  // console.log(users)
+
+  User.findOneAndUpdate(
+    { _id: id },
+    { firstName, lastName, email },
     await function (err, user) {
       if (err) {
         console.log(err);

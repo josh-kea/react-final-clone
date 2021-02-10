@@ -11,7 +11,6 @@ const SingleUser = (props) => {
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
   });
 
   // console.log(props)
@@ -37,16 +36,12 @@ const SingleUser = (props) => {
     fetchUser();
   }, []);
 
-  // Below useEffect runs once when the component updates.
-  useEffect(() => {});
-
   let currentDate = new Date();
   const dateCreated = new Date(user.createdAt);
   const timeSinceCreated = currentDate - dateCreated;
 
   const minutesSinceCreated =
     dateCreated.getMinutes() - currentDate.getMinutes();
-  console.log(currentDate.getMinutes());
 
   const createdAt = (user) => {
     const createdAtDate = new Date(user.createdAt);
@@ -56,17 +51,11 @@ const SingleUser = (props) => {
     return dateString;
   };
 
-  function showEditUserModal() {}
-
   function handleChange(name) {
     return function (event) {
       setModalContent({ ...user, [name]: event.target.value });
     };
   }
-
-  const handleUserEditClick = () => {
-    showEditUserModal();
-  };
 
   function toggleModal(bool) {
     setModalState(bool);
@@ -74,11 +63,36 @@ const SingleUser = (props) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      phone: user.phone,
     });
   }
 
-  const editUserModal = () => {
+
+  const EditUserModal = () => {
+    const handleSubmitEditUserModal = () => {
+        updateUser()
+    }
+
+    function updateUser() {
+        fetch(`http://localhost:4000/users/${props.match.params.id}`, {
+        method:'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            firstName: modalContent.firstName,
+            lastName: modalContent.lastName,
+            email: modalContent.email,
+        })
+        })
+        .then(res => res.json())
+        .then((data) => {
+            console.log(data)
+            fetchUser();
+            toggleModal(false)
+        })
+        .catch((error) => console.log(error));
+    }
+    
     return (
       <div className="edit-user-modal">
         <div className="modal-form-wrapper">
@@ -94,7 +108,7 @@ const SingleUser = (props) => {
               <path d="M11.414 10l6.293-6.293a1 1 0 1 0-1.414-1.414L10 8.586 3.707 2.293a1 1 0 0 0-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 1 0 1.414 1.414L10 11.414l6.293 6.293A.998.998 0 0 0 18 17a.999.999 0 0 0-.293-.707L11.414 10z"></path>
             </svg>
           </div>
-          <form className="modal-form">
+          <form className="modal-form" onSubmit={handleSubmitEditUserModal}>
             <div className="form-row">
               <div className="row-wrapper">
                 <p>First Name</p>
@@ -123,22 +137,13 @@ const SingleUser = (props) => {
                 />
               </div>
             </div>
-            <div className="form-row">
-              <div className="row-wrapper">
-                <p>Phone Number</p>
-                <input
-                  type="text"
-                  value={modalContent.phone}
-                  onChange={handleChange("phone")}
-                />
-              </div>
-            </div>
+
             <div className="form-row">
               <div className="row-wrapper  row-end">
                 <div className="form-btn" onClick={() => toggleModal(false)}>
                   Cancel
                 </div>
-                <div className="form-btn">Save</div>
+                <div className="form-btn" onClick={handleSubmitEditUserModal}>Save</div>
               </div>
             </div>
           </form>
@@ -228,7 +233,7 @@ const SingleUser = (props) => {
 
       </div>
 
-      {isModalActive ? editUserModal() : null}
+      {isModalActive ? EditUserModal() : null}
     </div>
   );
 };
