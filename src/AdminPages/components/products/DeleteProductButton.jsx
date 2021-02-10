@@ -19,7 +19,13 @@ const DeleteProductButton = (props) => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
+
+            if(data.error) {
+                console.log(data)
+            } else {
+                props.fetchProductsHandler()
+            }
+
         })
         .catch(err => console.log(err));
     }

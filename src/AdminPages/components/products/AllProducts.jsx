@@ -113,7 +113,7 @@ const AllProducts = (props) => {
                             <div className="product-row-title">{product.title}</div>
                            {createdAt(product)}
                         </Link>
-                        <DeleteProductButton productId={product._id}></DeleteProductButton>
+                        <DeleteProductButton productId={product._id} fetchProductsHandler={fetchProducts} ></DeleteProductButton>
                         </div>
                     )
                 })

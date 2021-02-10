@@ -252,8 +252,11 @@ app.delete("/products/:id", async (req, res) => {
   Product.findOneAndDelete(
     { _id: id },
     await function (err, product) {
-      if (err) {
-        console.log(err);
+        if (err) {
+          console.log(err);
+          return res.status(400).json({
+            error: err
+        })
       }
       res.status(200).json({
         product,
