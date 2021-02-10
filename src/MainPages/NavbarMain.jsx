@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { getUser, logout } from './helpers'
+import { getUser, logout } from '../helpers'
 import './NavbarMain.css'
 
 const NavbarMain = (props) => {

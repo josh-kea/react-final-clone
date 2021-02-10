@@ -11,7 +11,8 @@ const AddProductModal = (props) => {
         content:'',
         product_cost:'',
         selling_price:'',
-        aliexpress_link: ''
+        aliexpress_link: '',
+        error: ''
     });
 
      const fileSelectedHandler = (e) => {
@@ -74,7 +75,7 @@ const AddProductModal = (props) => {
 
 
     const handleFormCreateProduct = (event) => {
-            const { title, secureCloudinaryUrl, content, product_cost, selling_price, aliexpress_link } = state
+            const { title, secureCloudinaryUrl, content, product_cost, selling_price, aliexpress_link, error } = state
 
             // /POST IF STATES ARE VALID
             
@@ -96,9 +97,16 @@ const AddProductModal = (props) => {
                 return response.json()
             })
             .then(data => {
-                console.log(data)
-                props.toggleModal(false)
-                props.fetchProducts()  
+                if(data.error) {
+                    setState({
+                        ...state, error: data.error
+                    }) 
+                    
+                } else {
+                    props.toggleModal(false)
+                    props.fetchProducts() 
+                }
+ 
             })
             .catch(error => console.log('ERROR'))
     
@@ -159,6 +167,7 @@ const AddProductModal = (props) => {
                         </div>
                     </div>
                     <div className="form-row">
+                    <div className="signup-error">{state.error}</div>
                         <div className="row-wrapper  row-end">
                             <div className="form-btn" onClick={()=> props.toggleModal(false)}>Cancel</div>
                             <button className="form-btn">Create</button>

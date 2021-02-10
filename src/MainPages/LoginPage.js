@@ -1,8 +1,6 @@
-
-import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { verifyToken, logout, getUser } from './helpers.js';
+import { verifyToken, logout, getUser } from '../helpers';
 import './LoginPage.css'
 
 const LoginPage = (props) => {
@@ -54,7 +52,7 @@ const LoginPage = (props) => {
   useEffect(() => {
     console.log("UseEffect Mounted")
     if (verifyToken()) props.history.push('/')       
-  }, [])
+  })
 
   return (
     

@@ -16,3 +16,8 @@
     width:100%;
     display:block;
 }
+
+.signup-error {
+    font-size:12px;
+    color: red;
+}

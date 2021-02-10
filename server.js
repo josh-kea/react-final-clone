@@ -40,47 +40,15 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 
-// Creating user with bcrypt hashed password
-// POST /USERS  -- Creating a user
-// app.post('/users', async (req, res) => {
-//     try {
-//       const hashedPassword = await bcrypt.hash(req.body.password, 10)
-//       const user = { name: req.body.name, password: hashedPassword }
-//       users.push(user)
-//       console.log(users)
-//       res.status(201).send()
-//     } catch {
-//       res.status(500).send()
-//     }
-// })
-
 // Creating verification email function
 const sendVerificationMail = (email, uniqueString) => {
-  // const transporter = nodemailer.createTransport({
-  //   host: 'smtp.zoho.eu',
-  //   port: '465',
-  //   secure: true, // true for 465, false for other ports
-  //   auth: {
-  //     user: "joshua@ptd-cph.com",
-  //     pass: process.env.ZOHO_PASSWORD, // zoho protected password
-  //   },
-  // });
-
-  // const transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   auth: {
-  //     user: 'joshwebdev29@gmail.com',
-  //     pass: "Devboy#1"
-  //   }
-  // });
-
   const transporter = nodemailer.createTransport({
     host: "smtp-relay.sendinblue.com",
     port: "587",
-    secure: false, // true for 465, false for other ports
+    secure: false,
     auth: {
       user: "joshkap2015@gmail.com",
-      pass: process.env.SENDINBLUE_PASSWORD, // zoho protected password
+      pass: process.env.SENDINBLUE_PASSWORD,
     },
   });
 
@@ -130,10 +98,7 @@ app.post("/users", async (req, res) => {
       email: email,
     });
 
-    await user.setPassword(password); // hash & salt generator with crypto
-    // console.log(user.email)
-
-    //  console.log(user.hash + user.salt)
+    await user.setPassword(password);
 
     await user.generateEmailVerificationString(email);
 
@@ -171,7 +136,6 @@ app.post('/users/login', async (req, res) => {
 
   if (await user.validPassword(password)) {
     // if password matches
-
     token = user.generateJWT()
 
     await res.status(200)
@@ -183,9 +147,6 @@ app.post('/users/login', async (req, res) => {
       isAdmin: user.isAdmin
     });
 
-    // const authorizedUser = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log(req.cookies)
-
   } else if (await !user.validPassword(password)) {
         res.status(400).json({
         message: 'Password or email is incorrect!'
@@ -195,8 +156,6 @@ app.post('/users/login', async (req, res) => {
 
 // GET /users  -- Listing users
 app.get("/users", async (req, res) => {
-  // let users = await User.find({})
-  // console.log(users)
 
   User.find(
     {},
@@ -212,8 +171,6 @@ app.get("/users", async (req, res) => {
 // GET /users/id  -- Showing single user
 app.get("/users/:id", async (req, res) => {
   const { id } = req.params;
-  // let users = await User.find({})
-  // console.log(users)
 
   User.findOne(
     { _id: id },
@@ -230,8 +187,6 @@ app.get("/users/:id", async (req, res) => {
 app.put("/users/:id", async (req, res) => {
   const { id } = req.params;
   const { firstName, lastName, email } = req.body;
-  // let users = await User.find({})
-  // console.log(users)
 
   User.findOneAndUpdate(
     { _id: id },
@@ -294,47 +249,47 @@ app.get("/products/:id", async (req, res) => {
 app.post("/products/add", async (req, res) => {
   console.log(req.body) 
   const { title, content, product_cost, selling_price, aliexpress_link, productImg } = await req.body
-  
-  const slug =  slugify(title)// My Post my-post
+  const slug =  await slugify(title)// My Post my-post
 
   switch(true) {
-      case !title:
-          return res.status(400).json({
-              error: 'Title is required'
-          })
-      case !content:
-          return res.status(400).json({
-              error: 'Content is required'
-          })
-      case !product_cost:
+    case !title:
         return res.status(400).json({
-            error: 'Product cost is required'
+            error: 'Title is required'
         })
-      case !selling_price:
-          return res.status(400).json({
-              error: 'Selling price is required'
-          })
-      case !aliexpress_link:
+    case !content:
         return res.status(400).json({
-            error: 'Aliexpress link is required'
+            error: 'Content is required'
         })
-      case !slug:
+    case !product_cost:
+      return res.status(400).json({
+          error: 'Product cost is required'
+      })
+    case !selling_price:
         return res.status(400).json({
-          error: 'Generating slug error'
+            error: 'Selling price is required'
         })
+    case !aliexpress_link:
+      return res.status(400).json({
+          error: 'Aliexpress link is required'
+      })
   }
 
-  const profit_margin = selling_price - product_cost;
+  if (await Product.findOne({ slug: slug })){
+    return res.status(400).json({
+      error: 'Product slug already exists, please try a different product name.'
+    });
+  } else {
+    const profit_margin = selling_price - product_cost;
   
+    await Product.create({ title, productImg , content, product_cost, selling_price, profit_margin, aliexpress_link, slug }, (err, product) => {
+        if(err){
+            console.log(err)
+            return res.status(400).json({ error: 'Duplicate post. Try another title.'})
+        }
   
-  Product.create({ title, productImg , content, product_cost, selling_price, profit_margin, aliexpress_link, slug }, (err, product) => {
-      if(err){
-          console.log(err)
-          res.status(400).json({ error: 'Duplicate post. Try another title.'})
-      }
-
-      res.json(product);
-  });
+        res.json(product);
+    });
+  }
 
 });
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import HomePage from './HomePage';
-import LoginPage from './LoginPage';
-import SignupPage from './SignupPage';
-import Verify from './Verify';
+import HomePage from './MainPages/HomePage';
+import LoginPage from './MainPages/LoginPage';
+import SignupPage from './MainPages/SignupPage';
+import Verify from './MainPages/Verify';
 import AdminHome from './AdminPages/AdminHome';
 import AdminProducts from './AdminPages/AdminProducts';
 import AdminSingleProduct from './AdminPages/AdminSingleProduct';

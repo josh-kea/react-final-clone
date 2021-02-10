@@ -1,8 +1,6 @@
 
-import './App.css';
-import React, { useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import {authenticate, verifyToken, logout, getUser } from './helpers.js';
+import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import NavbarMain from './NavbarMain'
 import heroImage from './hero-image-2.svg';
 import { ReactComponent as Shopify } from './shopify.svg';

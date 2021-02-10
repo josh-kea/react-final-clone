@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { getUser, logout } from './helpers'
+import { getUser, logout } from '../helpers'
 import './ViewProductButton.css'
 
 const ViewProductButton = (props) => {
